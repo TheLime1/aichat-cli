@@ -2,6 +2,8 @@
 
 LimeBot CLI is a command-line interface chatbot powered by POE . It allows you to have interactive conversations with two different bots: Sage and ChatGPT.
 
+check the web version here : https://github.com/TheLime1/gptCensorFree
+
 ## Features
 
 - Choose between two bots: Sage or ChatGPT.
