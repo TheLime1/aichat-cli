@@ -1,6 +1,8 @@
 import argparse
 import poe
 import asyncio
+import os
+import subprocess
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 
@@ -25,6 +27,11 @@ def chatbot(input_message, bot):
 
 
 async def main():
+    # Check if token.txt is available and not empty
+    if not os.path.isfile("token.txt") or os.stat("token.txt").st_size == 0:
+        print("Token file not found or empty. Generating token...")
+        subprocess.run(["python", "token_gen.py"], check=True)
+
     parser = argparse.ArgumentParser(
         description='ClI chatbot powered by POE, created by @TheLime1')
     parser.add_argument(
