@@ -25,17 +25,31 @@ def chatbot(input_message, bot):
 
 
 async def main():
-    bot = ""
-    while bot not in [SAGE, GPT]:
-        bot_input = input("Enter 1 for Sage, 2 for GPT: ")
-        if bot_input == "1":
-            bot = SAGE
-        elif bot_input == "2":
-            bot = GPT
-        else:
-            print("Invalid input, please try again.")
+    parser = argparse.ArgumentParser(
+        description='ClI chatbot powered by POE, created by @TheLime1')
+    parser.add_argument(
+        '-b', '--bot', choices=[SAGE, GPT], help='Choose the bot (type Sage or ChatGPT)')
+    parser.add_argument('-m', '--message',
+                        help='Input message for the chatbot')
 
-    input_message = input("Input message for the chatbot: ")
+    args = parser.parse_args()
+
+    bot = args.bot
+    if bot is None:
+        while bot not in [SAGE, GPT]:
+            bot_input = input("[1] - Sage\n[2] - ChatGPT\n\nChoose your bot: ")
+            if bot_input == "1":
+                bot = SAGE
+            elif bot_input == "2":
+                bot = GPT
+            else:
+                print("Invalid input, please try again.")
+    else:
+        bot = args.bot
+
+    input_message = args.message
+    if input_message is None:
+        input_message = input("Input message for the chatbot: ")
 
     response = chatbot(input_message, bot)
 
