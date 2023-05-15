@@ -38,7 +38,7 @@ Example: `python limebot_cli.py -b sage`
 - `-m` or `--message`: Input a message for the chatbot.
 Example: `python limebot_cli.py -b chatgpt -m "Hello, how are you?"`
 
-- for unfo you can use `-h` or `--help` to see the help message.
+- for more info you can use `-h` or `--help` to see the help message.
 
 If you don't provide any command-line arguments, the app will prompt you to choose a bot and enter a message interactively.
 
