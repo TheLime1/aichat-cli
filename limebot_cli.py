@@ -17,6 +17,15 @@ BOT_NAME_MAPPING = {
 
 conversation = []
 
+ascii_art = '''
+    __     _                        ______ __            __ 
+   / /    (_)____ ___   ___        / ____// /_   ____ _ / /_
+  / /    / // __ `__ \ / _ \      / /    / __ \ / __ `// __/
+ / /___ / // / / / / //  __/     / /___ / / / // /_/ // /_  
+/_____//_//_/ /_/ /_/ \___/______\____//_/ /_/ \__,_/ \__/  
+                          /_____/                           
+'''
+
 
 def chatbot(input_message, bot):
     # initialize POE client with token
@@ -61,6 +70,7 @@ async def main():
     args = parser.parse_args()
 
     bot = args.bot
+    print(ascii_art)
     if bot is None:
         while bot not in BOT_NAME_MAPPING:
             bot_input = input("[1] - Sage\n[2] - ChatGPT\n\nChoose your bot: ")
@@ -97,15 +107,21 @@ async def main():
         elif option == "2":
             # Export conversation to .txt file
             filename = input("Enter the file name: ")
-            directory = "conv"
+            filename += ".txt"
+            directory = "conv"  # default name , you can change it
             if not os.path.exists(directory):
                 os.makedirs(directory)
             filepath = os.path.join(directory, filename)
             with open(filepath, "w") as file:
+                file.write(ascii_art)
                 for user_input, bot_response in conversation:
                     file.write(f"User: {user_input}\n")
                     file.write(f"Bot: {bot_response}\n")
+                file.write("\n***conversation exported by limebot_cli***")
+                file.close()
             print(f"Conversation exported to {filepath}.")
+            break
+
         elif option == "0":
             break
         else:
