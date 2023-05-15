@@ -8,7 +8,12 @@ from prompt_toolkit.completion import WordCompleter
 
 SAGE = "capybara"
 GPT = "chinchilla"
-BOT_COMPLETER = WordCompleter([SAGE, GPT], ignore_case=True)
+BOT_COMPLETER = WordCompleter(["sage", "chatgpt"], ignore_case=True)
+
+BOT_NAME_MAPPING = {
+    "sage": SAGE,
+    "chatgpt": GPT
+}
 
 
 def chatbot(input_message, bot):
@@ -35,7 +40,7 @@ async def main():
     parser = argparse.ArgumentParser(
         description='ClI chatbot powered by POE, created by @TheLime1')
     parser.add_argument(
-        '-b', '--bot', choices=[SAGE, GPT], help='Choose the bot (type Sage or ChatGPT)')
+        '-b', '--bot', choices=["sage", "chatgpt"], help='Choose the bot (type sage or chatgpt)')
     parser.add_argument('-m', '--message',
                         help='Input message for the chatbot')
 
@@ -43,16 +48,16 @@ async def main():
 
     bot = args.bot
     if bot is None:
-        while bot not in [SAGE, GPT]:
+        while bot not in BOT_NAME_MAPPING:
             bot_input = input("[1] - Sage\n[2] - ChatGPT\n\nChoose your bot: ")
             if bot_input == "1":
-                bot = SAGE
+                bot = "sage"
             elif bot_input == "2":
-                bot = GPT
+                bot = "chatgpt"
             else:
                 print("Invalid input, please try again.")
-    else:
-        bot = args.bot
+
+    bot = BOT_NAME_MAPPING[bot]
 
     input_message = args.message
     if input_message is None:
