@@ -1,6 +1,7 @@
 #custom
 token.txt
 /test
+/conv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

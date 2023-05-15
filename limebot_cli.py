@@ -15,6 +15,8 @@ BOT_NAME_MAPPING = {
     "chatgpt": GPT
 }
 
+conversation = []
+
 
 def chatbot(input_message, bot):
     # initialize POE client with token
@@ -29,6 +31,18 @@ def chatbot(input_message, bot):
     for chunk in client.send_message(bot, input_message, with_chat_break=True):
         response += chunk["text_new"]
     return response
+
+
+def print_menu():
+    print("-" * 50)
+    print("[1] - Change the bot")
+    print("[2] - Export conversation to .txt file")
+    print("[0] - Close the program")
+    print("\nType your message or choose an option:\n")
+
+
+def store_conversation(user_input, bot_response):
+    conversation.append((user_input, bot_response))
 
 
 async def main():
@@ -61,10 +75,42 @@ async def main():
 
     input_message = ' '.join(args.message) if args.message else input(
         "Input message for the chatbot: ")
-
     response = chatbot(input_message, bot)
 
-    print(response)
+    while True:
+        print("\n")
+        print(response)
+        # Store the conversation
+        store_conversation(input_message, response)
+        # Print the menu options
+        print_menu()
+        option = input()
+
+        if option == "1":
+            bot_input = input("[1] - Sage\n[2] - ChatGPT\n\nChoose your bot: ")
+            if bot_input == "1":
+                bot = "sage"
+            elif bot_input == "2":
+                bot = "chatgpt"
+            else:
+                print("Invalid input, please try again.")
+        elif option == "2":
+            # Export conversation to .txt file
+            filename = input("Enter the file name: ")
+            directory = "conv"
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+            filepath = os.path.join(directory, filename)
+            with open(filepath, "w") as file:
+                for user_input, bot_response in conversation:
+                    file.write(f"User: {user_input}\n")
+                    file.write(f"Bot: {bot_response}\n")
+            print(f"Conversation exported to {filepath}.")
+        elif option == "0":
+            break
+        else:
+            response = chatbot(option, bot)
+            input_message = option
 
 
 if __name__ == '__main__':
