@@ -42,7 +42,7 @@ async def main():
     parser.add_argument(
         '-b', '--bot', choices=["sage", "chatgpt"], help='Choose the bot (type sage or chatgpt)')
     parser.add_argument('-m', '--message',
-                        help='Input message for the chatbot')
+                        nargs='+', help='Input message for the chatbot')
 
     args = parser.parse_args()
 
@@ -59,9 +59,8 @@ async def main():
 
     bot = BOT_NAME_MAPPING[bot]
 
-    input_message = args.message
-    if input_message is None:
-        input_message = input("Input message for the chatbot: ")
+    input_message = ' '.join(args.message) if args.message else input(
+        "Input message for the chatbot: ")
 
     response = chatbot(input_message, bot)
 
