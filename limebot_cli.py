@@ -39,6 +39,7 @@ def chatbot(input_message, bot):
     # stream the response from POE client
     for chunk in client.send_message(bot, input_message, with_chat_break=True):
         response += chunk["text_new"]
+        print(chunk["text_new"], end="", flush=True)
     return response
 
 
@@ -89,7 +90,6 @@ async def main():
 
     while True:
         print("\n")
-        print(response)
         # Store the conversation
         store_conversation(input_message, response)
         # Print the menu options
