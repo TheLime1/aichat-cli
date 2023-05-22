@@ -86,8 +86,7 @@ async def main():
 
     bot = BOT_NAME_MAPPING[bot]
 
-    input_message = ' '.join(args.message) if args.message else input(
-        "Input message for the chatbot:\n")
+    input_message = ' '.join(args.message) if args.message else "hello"
 
     response = chatbot(input_message, bot)
 
@@ -127,6 +126,9 @@ async def main():
         elif option == "3":
             clipboard_text = pyperclip.paste()
             if clipboard_text:
+                print("\nClipboard contents:\n")
+                print(clipboard_text)
+                print("\n")
                 option = clipboard_text.strip()
                 response = chatbot(option.replace('\n', ' '), bot)
                 input_message = option
