@@ -48,7 +48,9 @@ Once the conversation starts, you can continue the interaction by typing your me
 
 To change the bot during the conversation, select option `1` from the menu and choose the desired bot.
 
-To export the conversation to a .txt file, select option `2` from the menu. Enter the desired filename when prompted, and the conversation will be saved in the `conv` directory as a .txt file.
+To insert the clipboard contents as a message, select option `2` from the menu. The current contents of the clipboard will be used as the input message for the chatbot.
+
+To export the conversation to a .txt file, select option `3` from the menu. Enter the desired filename when prompted, and the conversation will be saved in the `conv` directory as a .txt file.
 
 To exit the LimeBot CLI app, select option `0` from the menu.
 
