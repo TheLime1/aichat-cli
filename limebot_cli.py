@@ -95,6 +95,7 @@ async def main():
         store_conversation(input_message, response)
         print_menu()
         option = input()
+        print("*************")
 
         if option == "1":
             bot_input = input("[1] - Sage\n[2] - ChatGPT\n\nChoose your bot: ")
@@ -124,8 +125,9 @@ async def main():
             with open(filepath, "w") as file:
                 file.write(ascii_art)
                 for user_input, bot_response in conversation:
-                    file.write(f"User: {user_input}\n")
-                    file.write(f"Bot: {bot_response}\n")
+                    file.write("#######################\n")
+                    file.write(f"**USER**: {user_input}\n")
+                    file.write(f"**BOT**: {bot_response}\n")
                 file.write("\n***conversation exported by limebot_cli***")
                 file.close()
             print(f"Conversation exported to {filepath}.")
