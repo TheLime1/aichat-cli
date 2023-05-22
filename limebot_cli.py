@@ -47,8 +47,8 @@ def chatbot(input_message, bot):
 def print_menu():
     print("-" * 50)
     print("[1] - Change the bot")
-    print("[2] - Export conversation to .txt file")
-    print("[3] - Insert clipboard contents as message")
+    print("[2] - Insert clipboard contents as message")
+    print("[3] - Export conversation to .txt file")
     print("[0] - Close the program")
     print("\nType your message or choose an option:\n")
 
@@ -92,9 +92,7 @@ async def main():
 
     while True:
         print("\n")
-        # Store the conversation
         store_conversation(input_message, response)
-        # Print the menu options
         print_menu()
         option = input()
 
@@ -107,6 +105,15 @@ async def main():
             else:
                 print("Invalid input, please try again.")
         elif option == "2":
+            clipboard_text = pyperclip.paste()
+            if clipboard_text:
+                print("\nClipboard contents:\n")
+                print(clipboard_text)
+                print("\n")
+                option = clipboard_text.strip()
+                response = chatbot(option.replace('\n', ' '), bot)
+                input_message = option
+        elif option == "3":
             # Export conversation to .txt file
             filename = input("Enter the file name: ")
             filename += ".txt"
@@ -123,15 +130,6 @@ async def main():
                 file.close()
             print(f"Conversation exported to {filepath}.")
             break
-        elif option == "3":
-            clipboard_text = pyperclip.paste()
-            if clipboard_text:
-                print("\nClipboard contents:\n")
-                print(clipboard_text)
-                print("\n")
-                option = clipboard_text.strip()
-                response = chatbot(option.replace('\n', ' '), bot)
-                input_message = option
         elif option == "0":
             break
         else:
