@@ -3,6 +3,7 @@ import poe
 import asyncio
 import os
 import subprocess
+import pyperclip
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 
@@ -47,6 +48,7 @@ def print_menu():
     print("-" * 50)
     print("[1] - Change the bot")
     print("[2] - Export conversation to .txt file")
+    print("[3] - Insert clipboard contents as message")
     print("[0] - Close the program")
     print("\nType your message or choose an option:\n")
 
@@ -85,7 +87,8 @@ async def main():
     bot = BOT_NAME_MAPPING[bot]
 
     input_message = ' '.join(args.message) if args.message else input(
-        "Input message for the chatbot: ")
+        "Input message for the chatbot:\n")
+
     response = chatbot(input_message, bot)
 
     while True:
@@ -108,7 +111,7 @@ async def main():
             # Export conversation to .txt file
             filename = input("Enter the file name: ")
             filename += ".txt"
-            directory = "conv"  # default name , you can change it
+            directory = "conv"  # default name, you can change it
             if not os.path.exists(directory):
                 os.makedirs(directory)
             filepath = os.path.join(directory, filename)
@@ -121,7 +124,12 @@ async def main():
                 file.close()
             print(f"Conversation exported to {filepath}.")
             break
-
+        elif option == "3":
+            clipboard_text = pyperclip.paste()
+            if clipboard_text:
+                option = clipboard_text.strip()
+                response = chatbot(option.replace('\n', ' '), bot)
+                input_message = option
         elif option == "0":
             break
         else:
