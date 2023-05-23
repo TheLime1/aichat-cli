@@ -52,7 +52,7 @@ print("Clicked on 6-digit box.")
 time.sleep(3)
 
 while True:
-    code = input("Enter the verification code: ")
+    code = input("Check your email and enter the verification code: ")
     if len(code) == 6 and code.isdigit():
         break
     print("Invalid verification code. Please enter a 6-digit number.")

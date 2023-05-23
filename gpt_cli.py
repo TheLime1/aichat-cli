@@ -29,19 +29,26 @@ ascii_art = '''
 
 
 def chatbot(input_message, bot):
-    # initialize POE client with token
-    with open('token.txt', 'r') as f:  # put your token in token.txt
-        token = f.read().rstrip()
-    client = poe.Client(token)
+    try:
+        # initialize POE client with token
+        with open('token.txt', 'r') as f:  # put your token in token.txt
+            token = f.read().rstrip()
+        client = poe.Client(token)
 
-    # initialize response
-    response = ""
+        # initialize response
+        response = ""
 
-    # stream the response from POE client
-    for chunk in client.send_message(bot, input_message, with_chat_break=True):
-        response += chunk["text_new"]
-        print(chunk["text_new"], end="", flush=True)
-    return response
+        # stream the response from POE client
+        for chunk in client.send_message(bot, input_message, with_chat_break=True):
+            response += chunk["text_new"]
+            print(chunk["text_new"], end="", flush=True)
+        return response
+    except RuntimeError as e:
+        if str(e) == "Invalid token or no bots are available.":
+            print("Bad token trying to regenerate.....")
+            generate_token()
+        else:
+            raise e
 
 
 def print_menu():
@@ -57,11 +64,21 @@ def store_conversation(user_input, bot_response):
     conversation.append((user_input, bot_response))
 
 
+def check_token_file():
+    if not os.path.isfile("token.txt") or os.stat("token.txt").st_size == 0:
+        return False
+    return True
+
+
+def generate_token():
+    print("Token file not found or empty. Generating token...")
+    subprocess.run(["python", "token_gen.py"], check=True)
+
+
 async def main():
     # Check if token.txt is available and not empty
-    if not os.path.isfile("token.txt") or os.stat("token.txt").st_size == 0:
-        print("Token file not found or empty. Generating token...")
-        subprocess.run(["python", "token_gen.py"], check=True)
+    if not check_token_file():
+        generate_token()
 
     parser = argparse.ArgumentParser(
         description='ClI chatbot powered by POE, created by @TheLime1')
