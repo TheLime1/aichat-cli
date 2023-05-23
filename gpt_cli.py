@@ -19,6 +19,7 @@ BOT_NAME_MAPPING = {
 }
 
 conversation = []
+current_premium_token = None  # Variable to store the current premium token
 
 ascii_art = '''
     __     _                        ______ __            __ 
@@ -55,14 +56,19 @@ def chatbot(input_message, bot):
 
 def premuim_chatbot(input_message, bot):
     try:
-        # Read premium tokens from file
-        with open('premium_tokens.txt', 'r') as f:
-            premium_tokens = f.read().splitlines()
+        global current_premium_token  # Use the global variable
+        if current_premium_token is None:
+            # Read premium tokens from file only when no current token is available
+            with open('premium_tokens.txt', 'r') as f:
+                premium_tokens = f.read().splitlines()
+                if len(premium_tokens) > 0:
+                    # Store the first token in the list
+                    current_premium_token = premium_tokens[0]
 
-        # Try each premium token
-        for token in premium_tokens:
+        # Try the current premium token
+        if current_premium_token:
             try:
-                client = poe.Client(token)
+                client = poe.Client(current_premium_token)
 
                 # Initialize response
                 response = ""
@@ -77,6 +83,7 @@ def premuim_chatbot(input_message, bot):
             except RuntimeError as e:
                 if str(e) == "Invalid token or no bots are available.":
                     print("Invalid token, trying the next one...")
+                    current_premium_token = None  # Reset the current token
                 else:
                     raise e
 
@@ -200,11 +207,11 @@ async def main():
         elif option == "0":
             break
         else:
+            input_message = option
             if bot_input == "3":
                 response = premuim_chatbot(input_message, bot)
             else:
                 bot_input = chatbot(option, bot)
-            input_message = option
 
 
 if __name__ == '__main__':
