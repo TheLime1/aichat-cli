@@ -1,14 +1,14 @@
 # GPT CLI
 
-GPT CLI is a command-line interface chatbot powered by POE . It allows you to have interactive conversations with two different bots: Sage and ChatGPT.
+GPT CLI is a command-line interface chatbot powered by POE. It allows you to have interactive conversations with different bots, including GPT4.
 
-check the web version here : https://github.com/TheLime1/gptCensorFree
+Check the web version [here](https://github.com/TheLime1/gptCensorFree).
 
-Thanks to [@Lomusire](https://github.com/Lomusire) for providing premium tokens <3 
+Thanks to [@Lomusire](https://github.com/Lomusire) for providing premium tokens ❤️.
 
 ## Features
 
-- Choose between two bots: Sage or ChatGPT.
+- Choose between different bots.
 - Input messages for the chatbot via command-line arguments or interactively.
 - Export the conversation to a .txt file for future reference.
 
@@ -36,30 +36,24 @@ python gpt_cli.py
 
 The GPT CLI supports the following command-line arguments:
 
-- `-b` or `--bot`: Choose the bot for the conversation. Valid options are `sage` and `chatgpt`.
-Example: `python gpt_cli.py -b sage`
+- `-b` or `--bot`: Choose the bot for the conversation. Valid options are provided by the application.
+Example: `python gpt_cli.py -b chatgpt`
 
 - `-m` or `--message`: Input a message for the chatbot.
-Example: `python gpt_cli.py -b chatgpt -m "Hello, how are you?"`
+Example: `python gpt_cli.py -b sage -m "Hello, how are you?"`
 
-- for more info you can use `-h` or `--help` to see the help message.
+- For more info, use `-h` or `--help` to see the help message.
 
 If you don't provide any command-line arguments, the app will prompt you to choose a bot and enter a message interactively.
 
 Once the conversation starts, you can continue the interaction by typing your messages or selecting options from the menu. The menu options include changing the bot or exporting the conversation to a .txt file.
 
-To change the bot during the conversation, select option `1` from the menu and choose the desired bot.
-
-To insert the clipboard contents as a message, select option `2` from the menu. The current contents of the clipboard will be used as the input message for the chatbot.
-
-To export the conversation to a .txt file, select option `3` from the menu. Enter the desired filename when prompted, and the conversation will be saved in the `conv` directory as a .txt file.
-
-To exit the GPT CLI app, select option `0` from the menu.
-
 ## Notes
 
 - If the app cannot find the `token.txt` file or the file is empty, it will automatically generate a new token using the `token_gen.py` script provided.
 
+- The GPT CLI app also supports the use of premium tokens , so you can be able to use GPT4.
+
 - The conversation history is stored within the app and is not persistent between sessions.
 
-Feel free to customize and enhance the GPT CLI app according to your needs. Happy ~~chatting~~ cheating!
+Feel free to customize and enhance the GPT CLI app according to your needs. Happy **chatting**!
