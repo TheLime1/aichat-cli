@@ -26,7 +26,6 @@ assert "Poe" in driver.title
 print("Page opened successfully.")
 
 driver.set_window_size(839, 816)
-print("Window size set successfully.")
 
 driver.find_element(
     By.CSS_SELECTOR, ".Button_buttonBase__0QP_m:nth-child(5)").click()

@@ -9,11 +9,13 @@ from prompt_toolkit.completion import WordCompleter
 
 SAGE = "capybara"
 GPT = "chinchilla"
-BOT_COMPLETER = WordCompleter(["sage", "chatgpt"], ignore_case=True)
+GPT4 = "beaver"
+BOT_COMPLETER = WordCompleter(["sage", "chatgpt", "beaver"], ignore_case=True)
 
 BOT_NAME_MAPPING = {
     "sage": SAGE,
-    "chatgpt": GPT
+    "chatgpt": GPT,
+    "beaver": GPT4
 }
 
 conversation = []
@@ -51,6 +53,43 @@ def chatbot(input_message, bot):
             raise e
 
 
+def premuim_chatbot(input_message, bot):
+    try:
+        # Read premium tokens from file
+        with open('premium_tokens.txt', 'r') as f:
+            premium_tokens = f.read().splitlines()
+
+        # Try each premium token
+        for token in premium_tokens:
+            try:
+                client = poe.Client(token)
+
+                # Initialize response
+                response = ""
+
+                # Stream the response from POE client
+                for chunk in client.send_message(bot, input_message, with_chat_break=True):
+                    response += chunk["text_new"]
+                    print(chunk["text_new"], end="", flush=True)
+
+                return response
+
+            except RuntimeError as e:
+                if str(e) == "Invalid token or no bots are available.":
+                    print("Invalid token, trying the next one...")
+                else:
+                    raise e
+
+        # If no valid token is found, raise an exception
+        raise RuntimeError("No valid token available.")
+
+    except RuntimeError as e:
+        if str(e) == "Invalid token or no bots are available.":
+            print("No valid token available.")
+        else:
+            raise e
+
+
 def print_menu():
     print("-" * 50)
     print("[1] - Change the bot")
@@ -83,7 +122,7 @@ async def main():
     parser = argparse.ArgumentParser(
         description='ClI chatbot powered by POE, created by @TheLime1')
     parser.add_argument(
-        '-b', '--bot', choices=["sage", "chatgpt"], help='Choose the bot (type sage or chatgpt)')
+        '-b', '--bot', choices=["sage", "chatgpt", "beaver"], help='Choose the bot (type sage, chatgpt, or beaver)')
     parser.add_argument('-m', '--message',
                         nargs='+', help='Input message for the chatbot')
 
@@ -93,11 +132,14 @@ async def main():
     print(ascii_art)
     if bot is None:
         while bot not in BOT_NAME_MAPPING:
-            bot_input = input("[1] - Sage\n[2] - ChatGPT\n\nChoose your bot: ")
+            bot_input = input(
+                "[1] - Sage\n[2] - ChatGPT\n[3] - GPT4\n\nChoose your bot: ")
             if bot_input == "1":
                 bot = "sage"
             elif bot_input == "2":
                 bot = "chatgpt"
+            elif bot_input == "3":
+                bot = "beaver"
             else:
                 print("Invalid input, please try again.")
 
@@ -105,7 +147,10 @@ async def main():
 
     input_message = ' '.join(args.message) if args.message else "hello"
 
-    response = chatbot(input_message, bot)
+    if bot_input == "3":
+        response = premuim_chatbot(input_message, bot)
+    else:
+        response = chatbot(input_message, bot)
 
     while True:
         print("\n")
@@ -115,11 +160,14 @@ async def main():
         print("*************")
 
         if option == "1":
-            bot_input = input("[1] - Sage\n[2] - ChatGPT\n\nChoose your bot: ")
+            bot_input = input(
+                "[1] - Sage\n[2] - ChatGPT\n[3] - GPT4\n\nChoose your bot: ")
             if bot_input == "1":
                 bot = "sage"
             elif bot_input == "2":
                 bot = "chatgpt"
+            elif bot_input == "3":
+                bot = "beaver"
             else:
                 print("Invalid input, please try again.")
         elif option == "2":
@@ -152,7 +200,10 @@ async def main():
         elif option == "0":
             break
         else:
-            response = chatbot(option, bot)
+            if bot_input == "3":
+                response = premuim_chatbot(input_message, bot)
+            else:
+                bot_input = chatbot(option, bot)
             input_message = option
 
 
