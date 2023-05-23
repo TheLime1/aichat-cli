@@ -4,6 +4,8 @@ GPT CLI is a command-line interface chatbot powered by POE . It allows you to ha
 
 check the web version here : https://github.com/TheLime1/gptCensorFree
 
+Thanks to [@Lomusire](https://github.com/Lomusire) for providing premium tokens <3 
+
 ## Features
 
 - Choose between two bots: Sage or ChatGPT.
