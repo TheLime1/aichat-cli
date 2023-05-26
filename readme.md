@@ -57,3 +57,6 @@ Once the conversation starts, you can continue the interaction by typing your me
 - The conversation history is stored within the app and is not persistent between sessions.
 
 Feel free to customize and enhance the GPT CLI app according to your needs. Happy **chatting**!
+
+![WindowsTerminal_ayTEloGZs7](https://github.com/TheLime1/gpt-cli/assets/47940043/e695eebc-84fb-46d1-bb05-281511994799)
+
