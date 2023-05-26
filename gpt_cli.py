@@ -176,9 +176,10 @@ async def main():
     else:
         response = chatbot(input_message, bot)
 
+    store_conversation(input_message, response, current_bot)
+
     while True:
         print("\n")
-        store_conversation(input_message, response, current_bot)
         print_menu()
         option = input()
         print("*************")
@@ -238,6 +239,7 @@ async def main():
             else:
                 # Use the current bot name
                 response = chatbot(option, current_bot)
+            store_conversation(input_message, response, current_bot)
 
 
 if __name__ == '__main__':
