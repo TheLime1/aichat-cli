@@ -28,6 +28,7 @@ BOT_NAME_MAPPING = {
 
 conversation = []
 current_premium_token = None  # Variable to store the current premium token
+current_bot = None  # Variable to store the current bot name
 
 ascii_art = '''
     __     _                        ______ __            __ 
@@ -114,8 +115,8 @@ def print_menu():
     print("\nType your message or choose an option:\n")
 
 
-def store_conversation(user_input, bot_response):
-    conversation.append((user_input, bot_response))
+def store_conversation(user_input, bot_response, bot_name):
+    conversation.append((user_input, bot_response, bot_name))
 
 
 def check_token_file():
@@ -166,6 +167,7 @@ async def main():
                 print("Invalid input, please try again.")
 
     bot = BOT_NAME_MAPPING[bot]
+    current_bot = bot  # Store the current bot name
 
     input_message = ' '.join(args.message) if args.message else "hello"
 
@@ -176,14 +178,14 @@ async def main():
 
     while True:
         print("\n")
-        store_conversation(input_message, response)
+        store_conversation(input_message, response, current_bot)
         print_menu()
         option = input()
         print("*************")
 
         if option == "1":
             bot_input = input(
-                "[1] - Sage\n[2] - ChatGPT\n[3] - GPT4\n[4] - Claude\n[5] - Claude+\n[6] - Claude_100K\n\nChoose your bot: ")
+                "[1] - Sage (tweaked 3.5gpt_turbo) 4096 token\n[2] - ChatGPT (default) 4096 token\n[3] - GPT4(slower,more accurate) 8192 token \n[4] - Claude (default, FAST) 4500 token\n[5] - Claude+ (more creative, FASTER) 9000 token\n[6] - Claude_100K (BETA, very long messages) 100000 token\n\nChoose your bot: ")
             if bot_input == "1":
                 bot = "sage"
             elif bot_input == "2":
@@ -198,6 +200,7 @@ async def main():
                 bot = "claudehunk"
             else:
                 print("Invalid input, please try again.")
+            current_bot = bot  # Update the current bot name
         elif option == "2":
             clipboard_text = pyperclip.paste()
             if clipboard_text:
@@ -205,7 +208,7 @@ async def main():
                 print(clipboard_text)
                 print("\n")
                 option = clipboard_text.strip()
-                response = chatbot(option.replace('\n', ' '), bot)
+                response = chatbot(option.replace('\n', ' '), current_bot)
                 input_message = option
         elif option == "3":
             # Export conversation to .txt file
@@ -217,10 +220,10 @@ async def main():
             filepath = os.path.join(directory, filename)
             with open(filepath, "w") as file:
                 file.write(ascii_art)
-                for user_input, bot_response in conversation:
+                for user_input, bot_response, bot_name in conversation:
                     file.write("#######################\n")
                     file.write(f"**USER**: {user_input}\n")
-                    file.write(f"**BOT**: {bot_response}\n")
+                    file.write(f"**BOT ({bot_name})**: {bot_response}\n")
                 file.write("\n***conversation exported by limebot_cli***")
                 file.close()
             print(f"Conversation exported to {filepath}.")
@@ -230,9 +233,11 @@ async def main():
         else:
             input_message = option
             if bot_input == "3" or bot_input == "5" or bot_input == "6":
-                response = premuim_chatbot(input_message, bot)
+                # Use the current bot name
+                response = premuim_chatbot(input_message, current_bot)
             else:
-                response = chatbot(option, bot)
+                # Use the current bot name
+                response = chatbot(option, current_bot)
 
 
 if __name__ == '__main__':
