@@ -108,7 +108,7 @@ def premuim_chatbot(input_message, bot):
 
 def print_menu():
     print("-" * 50)
-    print("[1] - Change the bot")
+    print("[1] - Change the bot (somtimes buggy)")
     print("[2] - Insert clipboard contents as message")
     print("[3] - Export conversation to .txt file")
     print("[0] - Close the program")
@@ -131,7 +131,7 @@ def generate_token():
 
 
 def change_bot():
-    global current_bot
+    global current_bot, bot_input
     bot_input = input(
         "[1] - Sage (tweaked 3.5gpt_turbo) 4096 token\n[2] - ChatGPT (default) 4096 token\n[3] - GPT4(slower,more accurate) 8192 token \n[4] - Claude (default, FAST) 4500 token\n[5] - Claude+ (more creative, FASTER) 9000 token\n[6] - Claude_100K (BETA, very long messages) 100000 token\n\nChoose your bot: ")
     if bot_input == "1":
@@ -174,7 +174,7 @@ def export_conversation():
         for user_input, bot_response, bot_name in conversation:
             file.write("#######################\n")
             file.write(f"**USER**: {user_input}\n")
-            file.write(f"**BOT ({bot_name})**: {bot_response}\n")
+            file.write(f"**BOT**: {bot_response}\n")
         file.write("\n***conversation exported by limebot_cli***")
         file.close()
     print(f"Conversation exported to {filepath}.")
