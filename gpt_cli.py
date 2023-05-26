@@ -130,6 +130,60 @@ def generate_token():
     subprocess.run(["python", "token_gen.py"], check=True)
 
 
+def change_bot():
+    global current_bot
+    bot_input = input(
+        "[1] - Sage (tweaked 3.5gpt_turbo) 4096 token\n[2] - ChatGPT (default) 4096 token\n[3] - GPT4(slower,more accurate) 8192 token \n[4] - Claude (default, FAST) 4500 token\n[5] - Claude+ (more creative, FASTER) 9000 token\n[6] - Claude_100K (BETA, very long messages) 100000 token\n\nChoose your bot: ")
+    if bot_input == "1":
+        bot = "sage"
+    elif bot_input == "2":
+        bot = "chatgpt"
+    elif bot_input == "3":
+        bot = "beaver"
+    elif bot_input == "4":
+        bot = "claude"
+    elif bot_input == "5":
+        bot = "claudeplus"
+    elif bot_input == "6":
+        bot = "claudehunk"
+    else:
+        print("Invalid input, please try again.")
+    current_bot = BOT_NAME_MAPPING[bot]  # Update the current bot name
+
+
+def insert_clipboard_message():
+    clipboard_text = pyperclip.paste()
+    if clipboard_text:
+        print("\nClipboard contents:\n")
+        print(clipboard_text)
+        print("\n")
+        option = clipboard_text.strip()
+        response = chatbot(option.replace('\n', ' '), current_bot)
+        store_conversation(option, response, current_bot)
+
+
+def export_conversation():
+    filename = input("Enter the file name: ")
+    filename += ".txt"
+    directory = "conv"  # default name, you can change it
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    filepath = os.path.join(directory, filename)
+    with open(filepath, "w") as file:
+        file.write(ascii_art)
+        for user_input, bot_response, bot_name in conversation:
+            file.write("#######################\n")
+            file.write(f"**USER**: {user_input}\n")
+            file.write(f"**BOT ({bot_name})**: {bot_response}\n")
+        file.write("\n***conversation exported by limebot_cli***")
+        file.close()
+    print(f"Conversation exported to {filepath}.")
+
+
+def close_program():
+    pass
+
+
 async def main():
     # Check if token.txt is available and not empty
     if not check_token_file():
@@ -185,51 +239,14 @@ async def main():
         print("*************")
 
         if option == "1":
-            bot_input = input(
-                "[1] - Sage (tweaked 3.5gpt_turbo) 4096 token\n[2] - ChatGPT (default) 4096 token\n[3] - GPT4(slower,more accurate) 8192 token \n[4] - Claude (default, FAST) 4500 token\n[5] - Claude+ (more creative, FASTER) 9000 token\n[6] - Claude_100K (BETA, very long messages) 100000 token\n\nChoose your bot: ")
-            if bot_input == "1":
-                bot = "sage"
-            elif bot_input == "2":
-                bot = "chatgpt"
-            elif bot_input == "3":
-                bot = "beaver"
-            elif bot_input == "4":
-                bot = "claude"
-            elif bot_input == "5":
-                bot = "claudeplus"
-            elif bot_input == "6":
-                bot = "claudehunk"
-            else:
-                print("Invalid input, please try again.")
-            current_bot = bot  # Update the current bot name
+            change_bot()
         elif option == "2":
-            clipboard_text = pyperclip.paste()
-            if clipboard_text:
-                print("\nClipboard contents:\n")
-                print(clipboard_text)
-                print("\n")
-                option = clipboard_text.strip()
-                response = chatbot(option.replace('\n', ' '), current_bot)
-                input_message = option
+            insert_clipboard_message()
         elif option == "3":
-            # Export conversation to .txt file
-            filename = input("Enter the file name: ")
-            filename += ".txt"
-            directory = "conv"  # default name, you can change it
-            if not os.path.exists(directory):
-                os.makedirs(directory)
-            filepath = os.path.join(directory, filename)
-            with open(filepath, "w") as file:
-                file.write(ascii_art)
-                for user_input, bot_response, bot_name in conversation:
-                    file.write("#######################\n")
-                    file.write(f"**USER**: {user_input}\n")
-                    file.write(f"**BOT ({bot_name})**: {bot_response}\n")
-                file.write("\n***conversation exported by limebot_cli***")
-                file.close()
-            print(f"Conversation exported to {filepath}.")
+            export_conversation()
             break
         elif option == "0":
+            close_program()
             break
         else:
             input_message = option
