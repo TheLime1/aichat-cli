@@ -10,12 +10,20 @@ from prompt_toolkit.completion import WordCompleter
 SAGE = "capybara"
 GPT = "chinchilla"
 GPT4 = "beaver"
-BOT_COMPLETER = WordCompleter(["sage", "chatgpt", "beaver"], ignore_case=True)
+CLAUDE = "a2"
+CLAUDEPLUS = "a2_2"
+CLAUDEHUNK = "a2_100k"
+
+BOT_COMPLETER = WordCompleter(
+    ["sage", "chatgpt", "beaver", "claude", "claudeplus", "claudehunk"], ignore_case=True)
 
 BOT_NAME_MAPPING = {
     "sage": SAGE,
     "chatgpt": GPT,
-    "beaver": GPT4
+    "beaver": GPT4,
+    "claude": CLAUDE,
+    "claudeplus": CLAUDEPLUS,
+    "claudehunk": CLAUDEHUNK
 }
 
 conversation = []
@@ -129,7 +137,8 @@ async def main():
     parser = argparse.ArgumentParser(
         description='ClI chatbot powered by POE, created by @TheLime1')
     parser.add_argument(
-        '-b', '--bot', choices=["sage", "chatgpt", "beaver"], help='Choose the bot (type sage, chatgpt, or beaver)')
+        '-b', '--bot', choices=["sage", "chatgpt", "beaver", "claude", "claudeplus", "claudehunk"],
+        help='Choose the bot (type sage, chatgpt, beaver, claude, claudeplus, or claudehunk)')
     parser.add_argument('-m', '--message',
                         nargs='+', help='Input message for the chatbot')
 
@@ -140,13 +149,19 @@ async def main():
     if bot is None:
         while bot not in BOT_NAME_MAPPING:
             bot_input = input(
-                "[1] - Sage\n[2] - ChatGPT\n[3] - GPT4\n\nChoose your bot: ")
+                "[1] - Sage (tweaked 3.5gpt_turbo) 4096 token\n[2] - ChatGPT (default) 4096 token\n[3] - GPT4(slower,more accurate) 8192 token \n[4] - Claude (default, FAST) 4500 token\n[5] - Claude+ (more creative, FASTER) 9000 token\n[6] - Claude_100K (BETA, very long messages) 100000 token\n\nChoose your bot: ")
             if bot_input == "1":
                 bot = "sage"
             elif bot_input == "2":
                 bot = "chatgpt"
             elif bot_input == "3":
                 bot = "beaver"
+            elif bot_input == "4":
+                bot = "claude"
+            elif bot_input == "5":
+                bot = "claudeplus"
+            elif bot_input == "6":
+                bot = "claudehunk"
             else:
                 print("Invalid input, please try again.")
 
@@ -154,7 +169,7 @@ async def main():
 
     input_message = ' '.join(args.message) if args.message else "hello"
 
-    if bot_input == "3":
+    if bot_input == "3" or bot_input == "5" or bot_input == "6":
         response = premuim_chatbot(input_message, bot)
     else:
         response = chatbot(input_message, bot)
@@ -168,13 +183,19 @@ async def main():
 
         if option == "1":
             bot_input = input(
-                "[1] - Sage\n[2] - ChatGPT\n[3] - GPT4\n\nChoose your bot: ")
+                "[1] - Sage\n[2] - ChatGPT\n[3] - GPT4\n[4] - Claude\n[5] - Claude+\n[6] - Claude_100K\n\nChoose your bot: ")
             if bot_input == "1":
                 bot = "sage"
             elif bot_input == "2":
                 bot = "chatgpt"
             elif bot_input == "3":
                 bot = "beaver"
+            elif bot_input == "4":
+                bot = "claude"
+            elif bot_input == "5":
+                bot = "claudeplus"
+            elif bot_input == "6":
+                bot = "claudehunk"
             else:
                 print("Invalid input, please try again.")
         elif option == "2":
@@ -208,10 +229,10 @@ async def main():
             break
         else:
             input_message = option
-            if bot_input == "3":
+            if bot_input == "3" or bot_input == "5" or bot_input == "6":
                 response = premuim_chatbot(input_message, bot)
             else:
-                bot_input = chatbot(option, bot)
+                response = chatbot(option, bot)
 
 
 if __name__ == '__main__':
