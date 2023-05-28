@@ -74,8 +74,8 @@ def premuim_chatbot(input_message, bot):
                     # Store the first token in the list
                     current_premium_token = premium_tokens[0]
 
-        # Try the current premium token
-        if current_premium_token:
+        # Try the current premium token or the next available token
+        while current_premium_token:
             try:
                 client = poe.Client(current_premium_token)
 
@@ -92,7 +92,14 @@ def premuim_chatbot(input_message, bot):
             except RuntimeError as e:
                 if str(e) == "Invalid token or no bots are available.":
                     print("Invalid token, trying the next one...")
-                    current_premium_token = None  # Reset the current token
+                    # Remove the current token from the list
+                    premium_tokens = premium_tokens[1:]
+                    if len(premium_tokens) > 0:
+                        # Store the next token in the list
+                        current_premium_token = premium_tokens[0]
+                    else:
+                        # No more tokens to try, raise an exception
+                        raise RuntimeError("No valid token available.")
                 else:
                     raise e
 
