@@ -1,6 +1,6 @@
-# GPT CLI
+# GPT CLI v0.1
 
-GPT CLI is a command-line interface chatbot powered by POE. It allows you to have interactive conversations with different bots, including GPT4.
+A command-line interface chatbot. It allows you to have interactive conversations with different bots, including GPT4 FOR FREE
 
 Check the web version [here](https://github.com/TheLime1/gptCensorFree).
 
