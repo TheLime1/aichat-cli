@@ -90,7 +90,7 @@ def premuim_chatbot(input_message, bot):
                 return response
 
             except RuntimeError as e:
-                if str(e) == "Invalid token or no bots are available.":
+                if str(e) in ["Invalid token or no bots are available.", "Invalid or missing token."]:
                     print("Invalid token, trying the next one...")
                     # Remove the current token from the list
                     premium_tokens = premium_tokens[1:]
@@ -107,7 +107,7 @@ def premuim_chatbot(input_message, bot):
         raise RuntimeError("No valid token available.")
 
     except RuntimeError as e:
-        if str(e) == "Invalid token or no bots are available.":
+        if str(e) in ["Invalid token or no bots are available.", "Invalid or missing token."]:
             print("No valid token available.")
         else:
             raise e
