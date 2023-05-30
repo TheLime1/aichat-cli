@@ -56,8 +56,8 @@ def chatbot(input_message, bot):
             print(chunk["text_new"], end="", flush=True)
         return response
     except RuntimeError as e:
-        if str(e) == "Invalid token or no bots are available.":
-            print("Bad token trying to regenerate.....")
+        if str(e) in ["Invalid token or no bots are available.", "Invalid or missing token."]:
+            print("Bad token, trying to regenerate...")
             generate_token()
         else:
             raise e
