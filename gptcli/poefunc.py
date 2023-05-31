@@ -26,9 +26,8 @@ def chatbot(input_message, bot):
             raise e
 
 
-def premuim_chatbot(input_message, bot):
+def premuim_chatbot(input_message, bot, current_premium_token):
     try:
-        global current_premium_token  # Use the global variable
         if current_premium_token is None:
             # Read premium tokens from file only when no current token is available
             with open('premium_tokens.txt', 'r') as f:
