@@ -7,6 +7,7 @@ from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 
 from gptcli.utils import *
+from gptcli.poefunc import *
 
 SAGE = "capybara"
 GPT = "chinchilla"
@@ -29,7 +30,6 @@ BOT_NAME_MAPPING = {
 
 conversation = []
 current_premium_token = None  # Variable to store the current premium token
-current_bot = None  # Variable to store the current bot name
 
 
 def chatbot(input_message, bot):
@@ -114,17 +114,6 @@ def print_menu():
     print("\nType your message or choose an option:\n")
 
 
-def check_token_file():
-    if not os.path.isfile("token.txt") or os.stat("token.txt").st_size == 0:
-        return False
-    return True
-
-
-def generate_token():
-    print("Token file not found or empty. Generating token...")
-    subprocess.run(["python", "token_gen.py"], check=True)
-
-
 def change_bot():
     global current_bot, bot_input
     bot_input = input(
@@ -148,8 +137,8 @@ def change_bot():
 
 async def main():
     # Check if token.txt is available and not empty
-    if not check_token_file():
-        generate_token()
+    if not check_poe_token():
+        generate_poe_token()
 
     parser = argparse.ArgumentParser(
         description='ClI chatbot powered by POE, created by @TheLime1')
