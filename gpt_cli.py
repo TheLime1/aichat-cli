@@ -9,6 +9,8 @@ from prompt_toolkit.completion import WordCompleter
 from gptcli.utils import *
 from gptcli.poefunc import *
 
+dir = os.path.dirname(os.path.abspath(__file__))
+
 SAGE = "capybara"
 GPT = "chinchilla"
 GPT4 = "beaver"
@@ -59,13 +61,12 @@ def change_bot():
         bot = "claudehunk"
     else:
         print("Invalid input, please try again.")
-    current_bot = BOT_NAME_MAPPING[bot]  # Update the current bot name
 
 
 async def main():
     # Check if token.txt is available and not empty
-    if not check_poe_token():
-        generate_poe_token()
+    if not check_poe_token(dir):
+        generate_poe_token(dir)
 
     parser = argparse.ArgumentParser(
         description='ClI chatbot powered by POE, created by @TheLime1')
@@ -97,16 +98,16 @@ async def main():
                 bot = "claudehunk"
             else:
                 print("Invalid input, please try again.")
-
     bot = BOT_NAME_MAPPING[bot]
-    current_bot = bot  # Store the current bot name
+    current_bot = bot
 
     input_message = ' '.join(args.message) if args.message else "hello"
 
     if bot_input == "3" or bot_input == "5" or bot_input == "6":
-        response = premuim_chatbot(input_message, bot, current_premium_token)
+        response = premuim_chatbot(
+            input_message, bot, current_premium_token, dir)
     else:
-        response = chatbot(input_message, bot)
+        response = chatbot(input_message, bot, dir)
 
     store_conversation(input_message, response, current_bot, conversation)
 
@@ -131,10 +132,10 @@ async def main():
             if bot_input == "3" or bot_input == "5" or bot_input == "6":
                 # Use the current bot name
                 response = premuim_chatbot(
-                    input_message, bot, current_premium_token)
+                    input_message, bot, current_premium_token, dir)
             else:
                 # Use the current bot name
-                response = chatbot(option, current_bot)
+                response = chatbot(option, current_bot, dir)
             store_conversation(input_message, response,
                                current_bot, conversation)
 

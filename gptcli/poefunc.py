@@ -3,10 +3,10 @@ import os
 import subprocess
 
 
-def chatbot(input_message, bot):
+def chatbot(input_message, bot, dir):
     try:
         # initialize POE client with token
-        with open('token.txt', 'r') as f:  # put your token in token.txt
+        with open('tokens/poe_token.txt', 'r') as f:  # put your token in token.txt
             token = f.read().rstrip()
         client = poe.Client(token)
 
@@ -21,16 +21,17 @@ def chatbot(input_message, bot):
     except RuntimeError as e:
         if str(e) in ["Invalid token or no bots are available.", "Invalid or missing token."]:
             print("Bad token, trying to regenerate...")
-            generate_poe_token()
+            generate_poe_token(dir)
         else:
             raise e
 
 
-def premuim_chatbot(input_message, bot, current_premium_token):
+def premuim_chatbot(input_message, bot, current_premium_token, dir):
+    premium_tokens_file = os.path.join(dir, "tokens", "premium_tokens.txt")
     try:
         if current_premium_token is None:
             # Read premium tokens from file only when no current token is available
-            with open('premium_tokens.txt', 'r') as f:
+            with open(premium_tokens_file, 'r') as f:
                 premium_tokens = f.read().splitlines()
                 if len(premium_tokens) > 0:
                     # Store the first token in the list
@@ -75,12 +76,14 @@ def premuim_chatbot(input_message, bot, current_premium_token):
             raise e
 
 
-def check_poe_token():
-    if not os.path.isfile("token.txt") or os.stat("token.txt").st_size == 0:
+def check_poe_token(dir):
+    token_file = os.path.join(dir, "tokens", "poe_token.txt")
+    if not os.path.isfile(token_file) or os.stat(token_file).st_size == 0:
         return False
     return True
 
 
-def generate_poe_token():
+def generate_poe_token(dir):
+    gen_file = os.path.join(dir, "token_gen", "token_gen.py")
     print("Token file not found or empty. Generating token...")
-    subprocess.run(["python", "token_gen.py"], check=True)
+    subprocess.run(["python", gen_file], check=True)

@@ -69,9 +69,9 @@ time.sleep(1)
 token = None
 try:
     token = driver.get_cookie("p-b")["value"]
-    with open("token.txt", "w") as f:
+    with open("tokens/poe_token.txt", "w") as f:
         f.write(token)
-    print("Token saved successfully in token.txt.")
+    print("Token saved successfully in poe_token.txt.")
 except Exception as e:
     print("Error occurred while retrieving or saving the token:", str(e))
 
