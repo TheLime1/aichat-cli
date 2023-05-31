@@ -3,9 +3,10 @@ import poe
 import asyncio
 import os
 import subprocess
-import pyperclip
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
+
+from gptcli.utils import *
 
 SAGE = "capybara"
 GPT = "chinchilla"
@@ -29,15 +30,6 @@ BOT_NAME_MAPPING = {
 conversation = []
 current_premium_token = None  # Variable to store the current premium token
 current_bot = None  # Variable to store the current bot name
-
-ascii_art = '''
-    __     _                        ______ __            __ 
-   / /    (_)____ ___   ___        / ____// /_   ____ _ / /_
-  / /    / // __ `__ \ / _ \      / /    / __ \ / __ `// __/
- / /___ / // / / / / //  __/     / /___ / / / // /_/ // /_  
-/_____//_//_/ /_/ /_/ \___/______\____//_/ /_/ \__,_/ \__/  
-                          /_____/                           
-'''
 
 
 def chatbot(input_message, bot):
@@ -122,10 +114,6 @@ def print_menu():
     print("\nType your message or choose an option:\n")
 
 
-def store_conversation(user_input, bot_response, bot_name):
-    conversation.append((user_input, bot_response, bot_name))
-
-
 def check_token_file():
     if not os.path.isfile("token.txt") or os.stat("token.txt").st_size == 0:
         return False
@@ -156,39 +144,6 @@ def change_bot():
     else:
         print("Invalid input, please try again.")
     current_bot = BOT_NAME_MAPPING[bot]  # Update the current bot name
-
-
-def insert_clipboard_message():
-    clipboard_text = pyperclip.paste()
-    if clipboard_text:
-        print("\nClipboard contents:\n")
-        print(clipboard_text)
-        print("\n")
-        option = clipboard_text.strip()
-        response = chatbot(option.replace('\n', ' '), current_bot)
-        store_conversation(option, response, current_bot)
-
-
-def export_conversation():
-    filename = input("Enter the file name: ")
-    filename += ".txt"
-    directory = "conv"  # default name, you can change it
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-    filepath = os.path.join(directory, filename)
-    with open(filepath, "w") as file:
-        file.write(ascii_art)
-        for user_input, bot_response, bot_name in conversation:
-            file.write("#######################\n")
-            file.write(f"**USER**: {user_input}\n")
-            file.write(f"**BOT**: {bot_response}\n")
-        file.write("\n***conversation exported by limebot_cli***")
-        file.close()
-    print(f"Conversation exported to {filepath}.")
-
-
-def close_program():
-    pass
 
 
 async def main():
@@ -237,7 +192,7 @@ async def main():
     else:
         response = chatbot(input_message, bot)
 
-    store_conversation(input_message, response, current_bot)
+    store_conversation(input_message, response, current_bot, conversation)
 
     while True:
         print("\n")
@@ -248,9 +203,9 @@ async def main():
         if option == "1":
             change_bot()
         elif option == "2":
-            insert_clipboard_message()
+            insert_clipboard_message(conversation, chatbot, current_bot)
         elif option == "3":
-            export_conversation()
+            export_conversation(conversation, ascii_art)
             break
         elif option == "0":
             close_program()
@@ -263,8 +218,8 @@ async def main():
             else:
                 # Use the current bot name
                 response = chatbot(option, current_bot)
-            store_conversation(input_message, response, current_bot)
-
+            store_conversation(input_message, response,
+                               current_bot, conversation)
 
 if __name__ == '__main__':
     asyncio.run(main())

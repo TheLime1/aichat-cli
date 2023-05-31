@@ -1,7 +1,8 @@
 #custom
-token.txt
+/tokens
 /test
 /conv
+/token.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
