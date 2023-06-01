@@ -2,10 +2,14 @@ import argparse
 import poe
 import asyncio
 import os
-import subprocess
-import pyperclip
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
+
+from gptcli.utils import *
+from gptcli.poefunc import *
+
+dir = os.path.dirname(os.path.abspath(__file__))
+conversation = []
 
 SAGE = "capybara"
 GPT = "chinchilla"
@@ -26,175 +30,11 @@ BOT_NAME_MAPPING = {
     "claudehunk": CLAUDEHUNK
 }
 
-conversation = []
-current_premium_token = None  # Variable to store the current premium token
-current_bot = None  # Variable to store the current bot name
-
-ascii_art = '''
-    __     _                        ______ __            __ 
-   / /    (_)____ ___   ___        / ____// /_   ____ _ / /_
-  / /    / // __ `__ \ / _ \      / /    / __ \ / __ `// __/
- / /___ / // / / / / //  __/     / /___ / / / // /_/ // /_  
-/_____//_//_/ /_/ /_/ \___/______\____//_/ /_/ \__,_/ \__/  
-                          /_____/                           
-'''
-
-
-def chatbot(input_message, bot):
-    try:
-        # initialize POE client with token
-        with open('token.txt', 'r') as f:  # put your token in token.txt
-            token = f.read().rstrip()
-        client = poe.Client(token)
-
-        # initialize response
-        response = ""
-
-        # stream the response from POE client
-        for chunk in client.send_message(bot, input_message, with_chat_break=True):
-            response += chunk["text_new"]
-            print(chunk["text_new"], end="", flush=True)
-        return response
-    except RuntimeError as e:
-        if str(e) in ["Invalid token or no bots are available.", "Invalid or missing token."]:
-            print("Bad token, trying to regenerate...")
-            generate_token()
-        else:
-            raise e
-
-
-def premuim_chatbot(input_message, bot):
-    try:
-        global current_premium_token  # Use the global variable
-        if current_premium_token is None:
-            # Read premium tokens from file only when no current token is available
-            with open('premium_tokens.txt', 'r') as f:
-                premium_tokens = f.read().splitlines()
-                if len(premium_tokens) > 0:
-                    # Store the first token in the list
-                    current_premium_token = premium_tokens[0]
-
-        # Try the current premium token or the next available token
-        while current_premium_token:
-            try:
-                client = poe.Client(current_premium_token)
-
-                # Initialize response
-                response = ""
-
-                # Stream the response from POE client
-                for chunk in client.send_message(bot, input_message, with_chat_break=True):
-                    response += chunk["text_new"]
-                    print(chunk["text_new"], end="", flush=True)
-
-                return response
-
-            except RuntimeError as e:
-                if str(e) in ["Invalid token or no bots are available.", "Invalid or missing token."]:
-                    print("Invalid token, trying the next one...")
-                    # Remove the current token from the list
-                    premium_tokens = premium_tokens[1:]
-                    if len(premium_tokens) > 0:
-                        # Store the next token in the list
-                        current_premium_token = premium_tokens[0]
-                    else:
-                        # No more tokens to try, raise an exception
-                        raise RuntimeError("No valid token available.")
-                else:
-                    raise e
-
-        # If no valid token is found, raise an exception
-        raise RuntimeError("No valid token available.")
-
-    except RuntimeError as e:
-        if str(e) in ["Invalid token or no bots are available.", "Invalid or missing token."]:
-            print("No valid token available.")
-        else:
-            raise e
-
-
-def print_menu():
-    print("-" * 50)
-    print("[1] - Change the bot (somtimes buggy)")
-    print("[2] - Insert clipboard contents as message")
-    print("[3] - Export conversation to .txt file")
-    print("[0] - Close the program")
-    print("\nType your message or choose an option:\n")
-
-
-def store_conversation(user_input, bot_response, bot_name):
-    conversation.append((user_input, bot_response, bot_name))
-
-
-def check_token_file():
-    if not os.path.isfile("token.txt") or os.stat("token.txt").st_size == 0:
-        return False
-    return True
-
-
-def generate_token():
-    print("Token file not found or empty. Generating token...")
-    subprocess.run(["python", "token_gen.py"], check=True)
-
-
-def change_bot():
-    global current_bot, bot_input
-    bot_input = input(
-        "[1] - Sage (tweaked 3.5gpt_turbo) 4096 token\n[2] - ChatGPT (default) 4096 token\n[3] - GPT4(slower,more accurate) 8192 token \n[4] - Claude (default, FAST) 4500 token\n[5] - Claude+ (more creative, FASTER) 9000 token\n[6] - Claude_100K (BETA, very long messages) 100000 token\n\nChoose your bot: ")
-    if bot_input == "1":
-        bot = "sage"
-    elif bot_input == "2":
-        bot = "chatgpt"
-    elif bot_input == "3":
-        bot = "beaver"
-    elif bot_input == "4":
-        bot = "claude"
-    elif bot_input == "5":
-        bot = "claudeplus"
-    elif bot_input == "6":
-        bot = "claudehunk"
-    else:
-        print("Invalid input, please try again.")
-    current_bot = BOT_NAME_MAPPING[bot]  # Update the current bot name
-
-
-def insert_clipboard_message():
-    clipboard_text = pyperclip.paste()
-    if clipboard_text:
-        print("\nClipboard contents:\n")
-        print(clipboard_text)
-        print("\n")
-        option = clipboard_text.strip()
-        response = chatbot(option.replace('\n', ' '), current_bot)
-        store_conversation(option, response, current_bot)
-
-
-def export_conversation():
-    filename = input("Enter the file name: ")
-    filename += ".txt"
-    directory = "conv"  # default name, you can change it
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-    filepath = os.path.join(directory, filename)
-    with open(filepath, "w") as file:
-        file.write(ascii_art)
-        for user_input, bot_response, bot_name in conversation:
-            file.write("#######################\n")
-            file.write(f"**USER**: {user_input}\n")
-            file.write(f"**BOT**: {bot_response}\n")
-        file.write("\n***conversation exported by limebot_cli***")
-        file.close()
-    print(f"Conversation exported to {filepath}.")
-
-
-def close_program():
-    pass
-
 
 async def main():
-    # Check if token.txt is available and not empty
-    if not check_token_file():
-        generate_token()
+    current_premium_token = None
+    if not check_poe_token(dir):
+        generate_poe_token(dir)
 
     parser = argparse.ArgumentParser(
         description='ClI chatbot powered by POE, created by @TheLime1')
@@ -210,34 +50,22 @@ async def main():
     print(ascii_art)
     if bot is None:
         while bot not in BOT_NAME_MAPPING:
-            bot_input = input(
-                "[1] - Sage (tweaked 3.5gpt_turbo) 4096 token\n[2] - ChatGPT (default) 4096 token\n[3] - GPT4(slower,more accurate) 8192 token \n[4] - Claude (default, FAST) 4500 token\n[5] - Claude+ (more creative, FASTER) 9000 token\n[6] - Claude_100K (BETA, very long messages) 100000 token\n\nChoose your bot: ")
-            if bot_input == "1":
-                bot = "sage"
-            elif bot_input == "2":
-                bot = "chatgpt"
-            elif bot_input == "3":
-                bot = "beaver"
-            elif bot_input == "4":
-                bot = "claude"
-            elif bot_input == "5":
-                bot = "claudeplus"
-            elif bot_input == "6":
-                bot = "claudehunk"
-            else:
+            bot = change_bot()
+            if bot is None:
                 print("Invalid input, please try again.")
-
     bot = BOT_NAME_MAPPING[bot]
-    current_bot = bot  # Store the current bot name
+    current_bot = bot
 
-    input_message = ' '.join(args.message) if args.message else "hello"
+    input_message = ' '.join(
+        args.message) if args.message else "whats your name?"
 
-    if bot_input == "3" or bot_input == "5" or bot_input == "6":
-        response = premuim_chatbot(input_message, bot)
+    if bot == "beaver" or bot == "claudeplus" or bot == "claudehunk":
+        response, current_premium_token = premuim_chatbot(
+            input_message, bot, current_premium_token, dir)
     else:
-        response = chatbot(input_message, bot)
+        response = chatbot(input_message, bot, dir)
 
-    store_conversation(input_message, response, current_bot)
+    store_conversation(input_message, response, current_bot, conversation)
 
     while True:
         print("\n")
@@ -246,25 +74,27 @@ async def main():
         print("*************")
 
         if option == "1":
-            change_bot()
+            bot = change_bot()
+            current_bot = BOT_NAME_MAPPING[bot]
         elif option == "2":
-            insert_clipboard_message()
+            insert_clipboard_message(conversation, chatbot, current_bot, dir)
         elif option == "3":
-            export_conversation()
+            export_conversation(conversation, ascii_art)
             break
         elif option == "0":
             close_program()
             break
         else:
             input_message = option
-            if bot_input == "3" or bot_input == "5" or bot_input == "6":
+            if bot == "beaver" or bot == "claudeplus" or bot == "claudehunk":
                 # Use the current bot name
-                response = premuim_chatbot(input_message, current_bot)
+                response, current_premium_token = premuim_chatbot(
+                    input_message, bot, current_premium_token, dir)
             else:
                 # Use the current bot name
-                response = chatbot(option, current_bot)
-            store_conversation(input_message, response, current_bot)
-
+                response = chatbot(option, current_bot, dir)
+            store_conversation(input_message, response,
+                               current_bot, conversation)
 
 if __name__ == '__main__':
     asyncio.run(main())
