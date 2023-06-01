@@ -9,6 +9,7 @@ from gptcli.utils import *
 from gptcli.poefunc import *
 
 dir = os.path.dirname(os.path.abspath(__file__))
+conversation = []
 
 SAGE = "capybara"
 GPT = "chinchilla"
@@ -28,18 +29,6 @@ BOT_NAME_MAPPING = {
     "claudeplus": CLAUDEPLUS,
     "claudehunk": CLAUDEHUNK
 }
-
-conversation = []
-current_premium_token = None  # Variable to store the current premium token
-
-
-def print_menu():
-    print("-" * 50)
-    print("[1] - Change the bot (somtimes buggy)")
-    print("[2] - Insert clipboard contents as message")
-    print("[3] - Export conversation to .txt file")
-    print("[0] - Close the program")
-    print("\nType your message or choose an option:\n")
 
 
 def change_bot():
@@ -63,7 +52,7 @@ def change_bot():
 
 
 async def main():
-    # Check if token.txt is available and not empty
+    current_premium_token = None
     if not check_poe_token(dir):
         generate_poe_token(dir)
 
@@ -103,7 +92,7 @@ async def main():
     input_message = ' '.join(args.message) if args.message else "hello"
 
     if bot_input == "3" or bot_input == "5" or bot_input == "6":
-        response = premuim_chatbot(
+        response, current_premium_token = premuim_chatbot(
             input_message, bot, current_premium_token, dir)
     else:
         response = chatbot(input_message, bot, dir)
@@ -130,7 +119,7 @@ async def main():
             input_message = option
             if bot_input == "3" or bot_input == "5" or bot_input == "6":
                 # Use the current bot name
-                response = premuim_chatbot(
+                response, current_premium_token = premuim_chatbot(
                     input_message, bot, current_premium_token, dir)
             else:
                 # Use the current bot name
