@@ -31,26 +31,6 @@ BOT_NAME_MAPPING = {
 }
 
 
-def change_bot():
-    global current_bot, bot_input
-    bot_input = input(
-        "[1] - Sage (tweaked 3.5gpt_turbo) 4096 token\n[2] - ChatGPT (default) 4096 token\n[3] - GPT4(slower,more accurate) 8192 token \n[4] - Claude (default, FAST) 4500 token\n[5] - Claude+ (more creative, FASTER) 9000 token\n[6] - Claude_100K (BETA, very long messages) 100000 token\n\nChoose your bot: ")
-    if bot_input == "1":
-        bot = "sage"
-    elif bot_input == "2":
-        bot = "chatgpt"
-    elif bot_input == "3":
-        bot = "beaver"
-    elif bot_input == "4":
-        bot = "claude"
-    elif bot_input == "5":
-        bot = "claudeplus"
-    elif bot_input == "6":
-        bot = "claudehunk"
-    else:
-        print("Invalid input, please try again.")
-
-
 async def main():
     current_premium_token = None
     if not check_poe_token(dir):
@@ -70,28 +50,16 @@ async def main():
     print(ascii_art)
     if bot is None:
         while bot not in BOT_NAME_MAPPING:
-            bot_input = input(
-                "[1] - Sage (tweaked 3.5gpt_turbo) 4096 token\n[2] - ChatGPT (default) 4096 token\n[3] - GPT4(slower,more accurate) 8192 token \n[4] - Claude (default, FAST) 4500 token\n[5] - Claude+ (more creative, FASTER) 9000 token\n[6] - Claude_100K (BETA, very long messages) 100000 token\n\nChoose your bot: ")
-            if bot_input == "1":
-                bot = "sage"
-            elif bot_input == "2":
-                bot = "chatgpt"
-            elif bot_input == "3":
-                bot = "beaver"
-            elif bot_input == "4":
-                bot = "claude"
-            elif bot_input == "5":
-                bot = "claudeplus"
-            elif bot_input == "6":
-                bot = "claudehunk"
-            else:
+            bot = change_bot()
+            if bot is None:
                 print("Invalid input, please try again.")
     bot = BOT_NAME_MAPPING[bot]
     current_bot = bot
 
-    input_message = ' '.join(args.message) if args.message else "hello"
+    input_message = ' '.join(
+        args.message) if args.message else "whats your name?"
 
-    if bot_input == "3" or bot_input == "5" or bot_input == "6":
+    if bot == "beaver" or bot == "claudeplus" or bot == "claudehunk":
         response, current_premium_token = premuim_chatbot(
             input_message, bot, current_premium_token, dir)
     else:
@@ -106,7 +74,8 @@ async def main():
         print("*************")
 
         if option == "1":
-            change_bot()
+            bot = change_bot()
+            current_bot = BOT_NAME_MAPPING[bot]
         elif option == "2":
             insert_clipboard_message(conversation, chatbot, current_bot)
         elif option == "3":
@@ -117,7 +86,7 @@ async def main():
             break
         else:
             input_message = option
-            if bot_input == "3" or bot_input == "5" or bot_input == "6":
+            if bot == "beaver" or bot == "claudeplus" or bot == "claudehunk":
                 # Use the current bot name
                 response, current_premium_token = premuim_chatbot(
                     input_message, bot, current_premium_token, dir)
