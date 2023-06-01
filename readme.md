@@ -32,6 +32,38 @@ pip install -r requirements.txt
 python gpt_cli.py
 ```
 
+<details>
+<summary>#####How To generate tokens manually>#####</summary>
+
+---
+### poe token
+Log into [Poe](https://poe.com/) on any web browser, then open your browser's developer tools (also known as "inspect") and look for the value of the `p-b` cookie in the following menus:
+
+Chromium: Devtools > Application > Cookies > poe.com
+
+Firefox: Devtools > Storage > Cookies
+
+Safari: Devtools > Storage > Cookies
+
+then save the token by creating `poe_token.txt` in `/tokens`
+
+---
+
+### Bard token
+
+Soon
+
+---
+
+### Bing token
+
+Soon
+
+---
+
+
+</details>
+
 ## Usage
 
 The GPT CLI supports the following command-line arguments:
