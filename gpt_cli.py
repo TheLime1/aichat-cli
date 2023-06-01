@@ -77,7 +77,7 @@ async def main():
             bot = change_bot()
             current_bot = BOT_NAME_MAPPING[bot]
         elif option == "2":
-            insert_clipboard_message(conversation, chatbot, current_bot)
+            insert_clipboard_message(conversation, chatbot, current_bot, dir)
         elif option == "3":
             export_conversation(conversation, ascii_art)
             break
