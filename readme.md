@@ -1,4 +1,4 @@
-# GPT CLI v0.1
+# GPT CLI v1.0
 
 A command-line interface chatbot. It allows you to have interactive conversations with different bots, including GPT4 FOR FREE
 
@@ -6,17 +6,17 @@ Check the web version [here](https://github.com/TheLime1/gptCensorFree).
 
 Thanks to [@Lomusire](https://github.com/Lomusire) for providing premium tokens ❤️.
 
-## Features
+## Features✨
 
 - Choose between different bots.
 - Input messages for the chatbot via command-line arguments or interactively.
 - Export the conversation to a .txt file for future reference.
 
-## Prerequisites
+## Prerequisites📋
 
 - Python 3.7 or higher installed on your system.
 
-## Getting Started
+## Getting Started🚀
 
 1. Clone or download the GPT CLI repository to your local machine.
 
@@ -33,7 +33,7 @@ python gpt_cli.py
 ```
 
 <details>
-<summary>#####How To generate tokens manually>#####</summary>
+<summary>🔐#####How To generate tokens manually#####🔐</summary>
 
 ---
 ### poe token
@@ -64,7 +64,7 @@ Soon
 
 </details>
 
-## Usage
+## Usage📝
 
 The GPT CLI supports the following command-line arguments:
 
@@ -80,7 +80,7 @@ If you don't provide any command-line arguments, the app will prompt you to choo
 
 Once the conversation starts, you can continue the interaction by typing your messages or selecting options from the menu. The menu options include changing the bot or exporting the conversation to a .txt file.
 
-## Notes
+## Notes📌
 
 - If the app cannot find the `token.txt` file or the file is empty, it will automatically generate a new token using the `token_gen.py` script provided.
 
