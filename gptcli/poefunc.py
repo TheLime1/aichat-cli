@@ -108,3 +108,11 @@ def generate_poe_token(dir):
     gen_file = os.path.join(dir, "token_gen", "token_gen.py")
     print("Token file not found or empty. Generating token...")
     subprocess.run(["python", gen_file], check=True)
+
+
+def delete_chat(current_premium_token):
+    shared_bots = ["beaver", "a2_2", "a2_100k"]
+    client = poe.Client(current_premium_token)
+    for bot in shared_bots:
+        client.purge_conversation(bot)
+        print("Chat history deleted for " + bot)

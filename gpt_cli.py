@@ -82,7 +82,7 @@ async def main():
             export_conversation(conversation, ascii_art)
             break
         elif option == "0":
-            close_program()
+            close_program(current_premium_token)
             break
         else:
             input_message = option

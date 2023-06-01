@@ -1,5 +1,6 @@
 import os
 import pyperclip
+from gptcli.poefunc import delete_chat
 
 ascii_art = '''
     __     _                        ______ __            __ 
@@ -49,7 +50,7 @@ def print_menu():
     print("[1] - Change the bot (somtimes buggy)")
     print("[2] - Insert clipboard contents as message")
     print("[3] - Export conversation to .txt file")
-    print("[0] - Close the program")
+    print("[0] - Close the program and delete chat history")
     print("\nType your message or choose an option:\n")
 
 
@@ -73,5 +74,7 @@ def change_bot():
     return bot
 
 
-def close_program():
+def close_program(current_premium_token):
+    print("clearing chat history...")
+    delete_chat(current_premium_token)
     pass
