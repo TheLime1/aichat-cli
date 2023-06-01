@@ -53,7 +53,7 @@ def premuim_chatbot(input_message, bot, current_premium_token, dir):
                     print(chunk["text_new"], end="", flush=True)
 
                 token_checked = True  # Set the flag to indicate a valid token has been found
-                return response
+                return response, current_premium_token
 
             except RuntimeError as e:
                 if str(e) in ["Invalid token or no bots are available.", "Invalid or missing token."]:

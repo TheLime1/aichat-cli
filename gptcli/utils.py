@@ -44,5 +44,14 @@ def export_conversation(conversation, ascii_art):
     print(f"Conversation exported to {filepath}.")
 
 
+def print_menu():
+    print("-" * 50)
+    print("[1] - Change the bot (somtimes buggy)")
+    print("[2] - Insert clipboard contents as message")
+    print("[3] - Export conversation to .txt file")
+    print("[0] - Close the program")
+    print("\nType your message or choose an option:\n")
+
+
 def close_program():
     pass
