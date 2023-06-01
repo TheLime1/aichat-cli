@@ -56,19 +56,22 @@ def premuim_chatbot(input_message, bot, current_premium_token, dir):
                 return response, current_premium_token
 
             except RuntimeError as e:
-                if str(e) in ["Invalid token or no bots are available.", "Invalid or missing token."]:
-                    print("Invalid token, trying the next one...")
-                    # Remove the current token from the list
-                    premium_tokens = premium_tokens[1:]
-                    if len(premium_tokens) > 0:
-                        # Store the next token in the list
-                        current_premium_token = premium_tokens[0]
+                error_messages = ["Invalid token or no bots are available.", "Invalid or missing token.",
+                                  "Daily limit reached for", "Daily limit reached for capybara.",
+                                  "Invalid token or no bots are available.",
+                                  "Invalid or missing token.",
+                                  "Daily limit reached for chinchilla.",
+                                  "Daily limit reached for beaver.",
+                                  "Daily limit reached for a2.",
+                                  "Daily limit reached for a2_2.",
+                                  "Daily limit reached for a2_100k."]
+                if any(error_message in str(e) for error_message in error_messages):
+                    if "Daily limit reached for" in str(e):
+                        print(
+                            "Daily limit reached for the chatbot, trying the next token...")
                     else:
-                        # No more tokens to try, raise an exception
-                        raise RuntimeError("No valid token available.")
-                elif "Daily limit reached for" in str(e):
-                    print(
-                        "Daily limit reached for the chatbot, trying the next token...")
+                        print("Invalid token, trying the next one...")
+
                     # Remove the current token from the list
                     premium_tokens = premium_tokens[1:]
                     if len(premium_tokens) > 0:
@@ -85,10 +88,11 @@ def premuim_chatbot(input_message, bot, current_premium_token, dir):
 
     except RuntimeError as e:
         if not token_checked:
-            if str(e) in ["Invalid token or no bots are available.", "Invalid or missing token."]:
-                print("No valid token available.")
-            elif "Daily limit reached for" in str(e):
-                print("Daily limit reached for the chatbot.")
+            if any(error_message in str(e) for error_message in error_messages):
+                if "Daily limit reached for" in str(e):
+                    print("Daily limit reached for the chatbot.")
+                else:
+                    print("No valid token available.")
             else:
                 raise e
 
