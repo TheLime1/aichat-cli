@@ -2,7 +2,6 @@ import argparse
 import poe
 import asyncio
 import os
-import subprocess
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 
