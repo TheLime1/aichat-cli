@@ -7,6 +7,7 @@ from prompt_toolkit.completion import WordCompleter
 
 from gptcli.utils import *
 from gptcli.poefunc import *
+from gptcli.bardfunc import *
 
 dir = os.path.dirname(os.path.abspath(__file__))
 conversation = []
@@ -17,9 +18,10 @@ GPT4 = "beaver"
 CLAUDE = "a2"
 CLAUDEPLUS = "a2_2"
 CLAUDEHUNK = "a2_100k"
+BARD = "bard"
 
 BOT_COMPLETER = WordCompleter(
-    ["sage", "chatgpt", "beaver", "claude", "claudeplus", "claudehunk"], ignore_case=True)
+    ["sage", "chatgpt", "beaver", "claude", "claudeplus", "claudehunk", "bard"], ignore_case=True)
 
 BOT_NAME_MAPPING = {
     "sage": SAGE,
@@ -27,7 +29,8 @@ BOT_NAME_MAPPING = {
     "beaver": GPT4,
     "claude": CLAUDE,
     "claudeplus": CLAUDEPLUS,
-    "claudehunk": CLAUDEHUNK
+    "claudehunk": CLAUDEHUNK,
+    "bard": BARD
 }
 
 
@@ -39,8 +42,8 @@ async def main():
     parser = argparse.ArgumentParser(
         description='ClI chatbot powered by POE, created by @TheLime1')
     parser.add_argument(
-        '-b', '--bot', choices=["sage", "chatgpt", "beaver", "claude", "claudeplus", "claudehunk"],
-        help='Choose the bot (type sage, chatgpt, beaver, claude, claudeplus, or claudehunk)')
+        '-b', '--bot', choices=["sage", "chatgpt", "beaver", "claude", "claudeplus", "claudehunk", "bard"],
+        help='Choose the bot (type sage, chatgpt, beaver, claude, claudeplus, claudehunk or bard)')
     parser.add_argument('-m', '--message',
                         nargs='+', help='Input message for the chatbot')
 
@@ -59,11 +62,14 @@ async def main():
     input_message = ' '.join(
         args.message) if args.message else "whats your name?"
 
-    if bot == "beaver" or bot == "claudeplus" or bot == "claudehunk":
-        response, current_premium_token = premuim_chatbot(
-            input_message, bot, current_premium_token, dir)
+    if bot == "bard":
+        response = bardbot(input_message, dir)
     else:
-        response = chatbot(input_message, bot, dir)
+        if bot == "beaver" or bot == "claudeplus" or bot == "claudehunk":
+            response, current_premium_token = premuim_chatbot(
+                input_message, bot, current_premium_token, dir)
+        else:
+            response = chatbot(input_message, bot, dir)
 
     store_conversation(input_message, response, current_bot, conversation)
 
@@ -82,17 +88,21 @@ async def main():
             export_conversation(conversation, ascii_art)
             break
         elif option == "0":
-            close_program(current_premium_token)
+            if current_premium_token is not None:
+                close_program(current_premium_token)
             break
         else:
             input_message = option
-            if bot == "beaver" or bot == "claudeplus" or bot == "claudehunk":
-                # Use the current bot name
-                response, current_premium_token = premuim_chatbot(
-                    input_message, bot, current_premium_token, dir)
+            if bot == "bard":
+                response = bardbot(input_message, dir)
             else:
-                # Use the current bot name
-                response = chatbot(option, current_bot, dir)
+                if bot == "beaver" or bot == "claudeplus" or bot == "claudehunk":
+                    # Use the current bot name
+                    response, current_premium_token = premuim_chatbot(
+                        input_message, bot, current_premium_token, dir)
+                else:
+                    # Use the current bot name
+                    response = chatbot(option, current_bot, dir)
             store_conversation(input_message, response,
                                current_bot, conversation)
 

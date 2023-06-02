@@ -2,3 +2,4 @@ poe-api==0.4.3
 selenium
 pyperclip==1.8.2
 prompt_toolkit
+bardapi==0.1.11
