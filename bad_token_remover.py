@@ -59,6 +59,27 @@ def create_pull_request(repo_owner, repo_name, branch, title, body, file_path, f
             print("Failed to create a commit in the pull request.")
             print(f"Status code: {response.status_code}")
             print(f"Response body: {response.text}")
+
+            # Try again with the updated SHA
+            response = requests.get(file_url, headers=headers)
+            if response.status_code == 200:
+                file_info = response.json()
+                file_sha = file_info["sha"]
+
+                # Update the SHA in the commit payload
+                commit_payload["sha"] = file_sha
+
+                # Try to create the commit again
+                response = requests.put(
+                    commit_url, headers=headers, json=commit_payload)
+
+                if response.status_code == 201:
+                    print(
+                        f"Commit created in the pull request: {commit_message}")
+                else:
+                    print("Failed to create a commit in the pull request.")
+                    print(f"Status code: {response.status_code}")
+                    print(f"Response body: {response.text}")
     else:
         print("Failed to create a pull request.")
         print(f"Status code: {response.status_code}")
