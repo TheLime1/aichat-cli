@@ -5,9 +5,8 @@ import os
 
 def create_pull_request(repo_owner, repo_name, branch, title, body, file_path, file_content):
     api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/pulls"
-
     headers = {
-        "Authorization": f"Bearer {os.environ['G_TOKEN']}",
+        "Authorization": f"Bearer {os.environ.get['G_TOKEN']}",
         "Accept": "application/vnd.github.v3+json"
     }
 
