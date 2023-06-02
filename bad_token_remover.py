@@ -1,7 +1,51 @@
-# this file is compatible with github actions
-
 import poe
+import requests
 import os
+
+
+def create_pull_request(repo_owner, repo_name, branch, title, body, file_path, file_content):
+    api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/pulls"
+
+    headers = {
+        "Authorization": f"Bearer {os.environ['G_TOKEN']}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+
+    payload = {
+        "title": title,
+        "body": body,
+        "head": branch,
+        "base": "main",
+        "maintainer_can_modify": True,
+        "draft": False,
+    }
+
+    # Create the pull request
+    response = requests.post(api_url, headers=headers, json=payload)
+    if response.status_code == 201:
+        pull_request = response.json()
+        pr_number = pull_request["number"]
+        pr_url = pull_request["html_url"]
+        print(f"Pull request created: {pr_url}")
+
+        # Create a commit with the modified file in the pull request
+        commit_message = f"Update {file_path}"
+        commit_payload = {
+            "message": commit_message,
+            "content": file_content,
+            "branch": branch
+        }
+
+        commit_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{file_path}"
+        response = requests.put(
+            commit_url, headers=headers, json=commit_payload)
+
+        if response.status_code == 201:
+            print(f"Commit created in the pull request: {commit_message}")
+        else:
+            print("Failed to create a commit in the pull request.")
+    else:
+        print("Failed to create a pull request.")
 
 
 def remove_bad_tokens():
@@ -36,8 +80,19 @@ def remove_bad_tokens():
                 print(f"Removing bad token: {token}")
                 consecutive_valid_tokens = 0
 
-        with open(premium_tokens_file, 'w') as f:
-            f.write('\n'.join(valid_tokens))
+        # Create the modified file content
+        modified_file_content = '\n'.join(valid_tokens)
+
+        # Make a pull request with the modified file
+        repo_owner = "TheLime1"
+        repo_name = "gpt-cli"
+        branch = "token_cleanup"
+        title = "Token Cleanup"
+        body = "This pull request removes bad tokens."
+        file_path = "tokens/premium_tokens.txt"
+
+        create_pull_request(repo_owner, repo_name, branch,
+                            title, body, file_path, modified_file_content)
 
     except FileNotFoundError:
         print("premium_tokens.txt file not found.")
