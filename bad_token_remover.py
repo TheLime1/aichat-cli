@@ -28,12 +28,25 @@ def create_pull_request(repo_owner, repo_name, branch, title, body, file_path, f
         pr_url = pull_request["html_url"]
         print(f"Pull request created: {pr_url}")
 
+        # Get the SHA of the most recent commit for the file
+        file_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{file_path}"
+        response = requests.get(file_url, headers=headers)
+        if response.status_code == 200:
+            file_info = response.json()
+            file_sha = file_info["sha"]
+        else:
+            print("Failed to get file info.")
+            print(f"Status code: {response.status_code}")
+            print(f"Response body: {response.text}")
+            return
+
         # Create a commit with the modified file in the pull request
         commit_message = f"Update {file_path}"
         commit_payload = {
             "message": commit_message,
             "content": file_content,
-            "branch": branch
+            "branch": branch,
+            "sha": file_sha
         }
 
         commit_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{file_path}"
