@@ -56,7 +56,7 @@ def print_menu():
 
 def change_bot():
     bot_input = input(
-        "[1] - Sage (tweaked 3.5gpt_turbo) 4096 tokens\n[2] - ChatGPT (default) 4096 tokens\n[3] - GPT4(slower,more accurate) 8192 tokens \n[4] - Claude (default, FAST) 4500 tokens\n[5] - Claude+ (more creative, FASTER) 9000 tokens\n[6] - Claude_100K (BETA, very long messages) 100000 tokens\n[7] - Bard (very tight,better at programming) 1000 tokens\n\nChoose your bot: ")
+        "[1] - Sage (tweaked 3.5gpt_turbo) 4096 tokens\n[2] - ChatGPT (default) 4096 tokens\n[3] - GPT4(slower,more accurate) 8192 tokens \n[4] - Claude (default, FAST) 4500 tokens\n[5] - Claude+ (more creative, FASTER) 9000 tokens\n[6] - Claude_100K (BETA, very long messages) 100000 tokens\n[7] - Bard (very tight,better at programming) 4097 tokens\n\nChoose your bot: ")
     if bot_input == "1":
         bot = "sage"
     elif bot_input == "2":
