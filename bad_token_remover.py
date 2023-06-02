@@ -5,83 +5,69 @@ import base64
 
 
 def create_pull_request(repo_owner, repo_name, branch, title, body, file_path, file_content):
-    api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/pulls"
     headers = {
         "Authorization": f"Bearer {os.environ.get('G_TOKEN')}",
         "Accept": "application/vnd.github.v3+json"
     }
 
-    payload = {
-        "title": title,
-        "body": body,
-        "head": branch,
-        "base": "main",
-        "maintainer_can_modify": True,
-        "draft": False,
+    # Get the SHA of the most recent commit on the base branch
+    base_branch = "main"
+    base_branch_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/git/ref/heads/{base_branch}"
+    response = requests.get(base_branch_url, headers=headers)
+    if response.status_code == 200:
+        base_branch_info = response.json()
+        base_branch_sha = base_branch_info["object"]["sha"]
+    else:
+        print("Failed to get base branch info.")
+        print(f"Status code: {response.status_code}")
+        print(f"Response body: {response.text}")
+        return
+
+    # Create a new branch with the updated file content
+    new_branch_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/git/refs"
+    new_branch_payload = {
+        "ref": f"refs/heads/{branch}",
+        "sha": base_branch_sha
+    }
+    response = requests.post(
+        new_branch_url, headers=headers, json=new_branch_payload)
+    if response.status_code == 201:
+        print(f"New branch created: {branch}")
+    else:
+        print("Failed to create new branch.")
+        print(f"Status code: {response.status_code}")
+        print(f"Response body: {response.text}")
+        return
+
+    # Get the SHA of the most recent commit for the file
+    file_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{file_path}?ref={branch}"
+    response = requests.get(file_url, headers=headers)
+    if response.status_code == 200:
+        file_info = response.json()
+        file_sha = file_info["sha"]
+    else:
+        print("Failed to get file info.")
+        print(f"Status code: {response.status_code}")
+        print(f"Response body: {response.text}")
+        return
+
+    # Create a commit with the modified file in the new branch
+    commit_message = f"Update {file_path}"
+    commit_payload = {
+        "message": commit_message,
+        "content": file_content,
+        "branch": branch,
+        "sha": file_sha
     }
 
-    # Create the pull request
-    response = requests.post(api_url, headers=headers, json=payload)
+    commit_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{file_path}"
+    response = requests.put(
+        commit_url, headers=headers, json=commit_payload)
+
     if response.status_code == 201:
-        pull_request = response.json()
-        pr_number = pull_request["number"]
-        pr_url = pull_request["html_url"]
-        print(f"Pull request created: {pr_url}")
-
-        # Get the SHA of the most recent commit for the file
-        file_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{file_path}"
-        response = requests.get(file_url, headers=headers)
-        if response.status_code == 200:
-            file_info = response.json()
-            file_sha = file_info["sha"]
-        else:
-            print("Failed to get file info.")
-            print(f"Status code: {response.status_code}")
-            print(f"Response body: {response.text}")
-            return
-
-        # Create a commit with the modified file in the pull request
-        commit_message = f"Update {file_path}"
-        commit_payload = {
-            "message": commit_message,
-            "content": file_content,
-            "branch": branch,
-            "sha": file_sha
-        }
-
-        commit_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{file_path}"
-        response = requests.put(
-            commit_url, headers=headers, json=commit_payload)
-
-        if response.status_code == 201:
-            print(f"Commit created in the pull request: {commit_message}")
-        else:
-            print("Failed to create a commit in the pull request.")
-            print(f"Status code: {response.status_code}")
-            print(f"Response body: {response.text}")
-
-            # Try again with the updated SHA
-            response = requests.get(file_url, headers=headers)
-            if response.status_code == 200:
-                file_info = response.json()
-                file_sha = file_info["sha"]
-
-                # Update the SHA in the commit payload
-                commit_payload["sha"] = file_sha
-
-                # Try to create the commit again
-                response = requests.put(
-                    commit_url, headers=headers, json=commit_payload)
-
-                if response.status_code == 201:
-                    print(
-                        f"Commit created in the pull request: {commit_message}")
-                else:
-                    print("Failed to create a commit in the pull request.")
-                    print(f"Status code: {response.status_code}")
-                    print(f"Response body: {response.text}")
+        print(f"Commit created in the new branch: {commit_message}")
     else:
-        print("Failed to create a pull request.")
+        print("Failed to create a commit in the new branch.")
         print(f"Status code: {response.status_code}")
         print(f"Response body: {response.text}")
 
