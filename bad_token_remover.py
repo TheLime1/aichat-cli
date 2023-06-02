@@ -1,6 +1,7 @@
 import poe
 import requests
 import os
+import base64
 
 
 def create_pull_request(repo_owner, repo_name, branch, title, body, file_path, file_content):
@@ -85,17 +86,19 @@ def remove_bad_tokens():
 
         # Create the modified file content
         modified_file_content = '\n'.join(valid_tokens)
+        encoded_file_content = base64.b64encode(
+            modified_file_content.encode('utf-8')).decode('utf-8')
 
         # Make a pull request with the modified file
         repo_owner = "TheLime1"
         repo_name = "gpt-cli"
-        branch = "workflow"  # !dont forget to change this
+        branch = "workflow"
         title = "Token Cleanup"
         body = "This pull request removes bad tokens."
         file_path = "tokens/premium_tokens.txt"
 
         create_pull_request(repo_owner, repo_name, branch,
-                            title, body, file_path, modified_file_content)
+                            title, body, file_path, encoded_file_content)
 
     except FileNotFoundError:
         print("premium_tokens.txt file not found.")
