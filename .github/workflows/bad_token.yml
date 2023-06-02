@@ -3,11 +3,13 @@ name: Daily Token Check
 on:
   schedule:
     - cron: "0 0 * * *"
-  workflow_dispatch:  # Add manual run event
+  workflow_dispatch: # Add manual run event
 
 jobs:
   token_check:
     runs-on: ubuntu-latest
+    env:
+      G_TOKEN: ${{ secrets.G_TOKEN }}
 
     steps:
       - name: Checkout repository

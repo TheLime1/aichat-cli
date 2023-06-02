@@ -89,7 +89,7 @@ def remove_bad_tokens():
         # Make a pull request with the modified file
         repo_owner = "TheLime1"
         repo_name = "gpt-cli"
-        branch = "workflow"
+        branch = "workflow"  # !dont forget to change this
         title = "Token Cleanup"
         body = "This pull request removes bad tokens."
         file_path = "tokens/premium_tokens.txt"
