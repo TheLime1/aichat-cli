@@ -4,8 +4,8 @@ import os
 
 def bardbot(input_message, dir):
     if not check_bard_token(dir):
-        print("Check README for instructions on how to generate Bard token manually.")
-        raise RuntimeError("No valid Bard token available.")
+        raise RuntimeError(
+            "No valid Bard token available. Check README for instructions on how to generate Bard token manually.")
     else:
         with open('tokens/bard_token.txt', 'r') as f:
             token = f.read().rstrip()
