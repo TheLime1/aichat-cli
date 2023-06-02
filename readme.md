@@ -1,4 +1,4 @@
-# GPT CLI v1.0
+# GPT CLI v2.0
 
 A command-line interface chatbot. It allows you to have interactive conversations with different bots, including GPT4 FOR FREE
 
@@ -51,7 +51,17 @@ then save the token by creating `poe_token.txt` in `/tokens`
 
 ### Bard token
 
-Soon
+Log into [Bard](https://bard.google.com/) on any web browser, then open your browser's developer tools (also known as "inspect") and look for the value of the `__Secure-1PSID` cookie in the following menus:
+(tip : copy the cookie name to the filter box)
+
+Chromium: Devtools > Application > Cookies > bard.google.com
+
+Firefox: Devtools > Storage > Cookies
+
+Safari: Devtools > Storage > Cookies
+
+then save the token by creating `bard_token.txt` in `/tokens`
+> :warning: **Warning:** Be careful using Bard tokens; they are Google account tokens.
 
 ---
 
