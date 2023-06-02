@@ -43,8 +43,12 @@ def create_pull_request(repo_owner, repo_name, branch, title, body, file_path, f
             print(f"Commit created in the pull request: {commit_message}")
         else:
             print("Failed to create a commit in the pull request.")
+            print(f"Status code: {response.status_code}")
+            print(f"Response body: {response.text}")
     else:
         print("Failed to create a pull request.")
+        print(f"Status code: {response.status_code}")
+        print(f"Response body: {response.text}")
 
 
 def remove_bad_tokens():
