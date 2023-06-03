@@ -38,6 +38,7 @@ def remove_bad_tokens():
 
         with open(premium_tokens_file, 'w') as f:
             f.write('\n'.join(valid_tokens))
+            f.write('\n'.join(unchecked_tokens[len(valid_tokens):]))
 
     except FileNotFoundError:
         print("premium_tokens.txt file not found.")
@@ -45,8 +46,8 @@ def remove_bad_tokens():
     print("Valid tokens:")
     print(valid_tokens)
 
-    print("Unchecked tokens:")
-    print(unchecked_tokens)
+    print("Remaining unchecked tokens:")
+    print(unchecked_tokens[len(valid_tokens):])
 
     print("Bad tokens:")
     print(bad_tokens)
