@@ -27,3 +27,14 @@ jobs:
 
       - name: Run token check
         run: python bad_token_remover.py
+
+      - name: Create new branch
+        run: |
+          git checkout -b new-branch
+          git add premium_tokens.txt
+          git commit -m "Remove bad tokens"
+
+      - name: Create pull request
+        run: |
+          git push origin new-branch
+          gh pr create -b new-branch -t "Remove bad tokens"
