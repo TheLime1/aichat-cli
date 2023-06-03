@@ -1,4 +1,4 @@
-name: Daily Token Check
+name: Did i find a bad token today ?
 
 on:
   schedule:
