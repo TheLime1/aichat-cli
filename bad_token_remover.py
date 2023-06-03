@@ -5,7 +5,6 @@ import os
 
 
 def remove_bad_tokens():
-    # Get the current working directory, which is the repository root in GitHub Actions
     repo_root = os.getcwd()
 
     premium_tokens_file = os.path.join(
@@ -22,11 +21,12 @@ def remove_bad_tokens():
         # Move all tokens to the unchecked_tokens list initially
         unchecked_tokens.extend(premium_tokens)
 
-        for token in unchecked_tokens:
+        for token in premium_tokens:
             try:
                 client = poe.Client(token)
                 valid_tokens.append(token)
                 consecutive_valid_tokens += 1
+                print(f"Valid token: {token}")
 
                 if consecutive_valid_tokens == 3:
                     break  # Stop the program when there are three consecutive valid tokens
@@ -35,9 +35,17 @@ def remove_bad_tokens():
                 bad_tokens.append(token)
                 print(f"Removing bad token: {token}")
                 consecutive_valid_tokens = 0
+            finally:
+                # Remove the checked token from the unchecked_tokens list
+                unchecked_tokens.remove(token)
+
+        if consecutive_valid_tokens < 3:
+            # Add the remaining unchecked tokens to the valid_tokens list
+            valid_tokens.extend(unchecked_tokens)
 
         with open(premium_tokens_file, 'w') as f:
-            f.write('\n'.join(valid_tokens))
+            # Write the valid_tokens first, followed by the remaining unchecked_tokens
+            f.write('\n'.join(valid_tokens + unchecked_tokens))
 
     except FileNotFoundError:
         print("premium_tokens.txt file not found.")
