@@ -28,6 +28,11 @@ jobs:
       - name: Run token check
         run: python bad_token_remover.py
 
+      - name: Set Git identity
+        run: |
+          git config --global user.email "everpadd4@gmail.com"
+          git config --global user.name "thelime1"
+
       - name: Create new branch
         run: |
           git checkout -b new-branch
