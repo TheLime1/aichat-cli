@@ -2,6 +2,7 @@ import poe
 import requests
 import os
 import base64
+from datetime import datetime
 
 
 def create_pull_request(repo_owner, repo_name, branch, title, body, file_path, file_content):
@@ -23,16 +24,20 @@ def create_pull_request(repo_owner, repo_name, branch, title, body, file_path, f
         print(f"Response body: {response.text}")
         return
 
+    # Generate a unique branch name by appending a timestamp
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    unique_branch = f"{branch}-{timestamp}"
+
     # Create a new branch with the updated file content
     new_branch_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/git/refs"
     new_branch_payload = {
-        "ref": f"refs/heads/{branch}",
+        "ref": f"refs/heads/{unique_branch}",
         "sha": base_branch_sha
     }
     response = requests.post(
         new_branch_url, headers=headers, json=new_branch_payload)
     if response.status_code == 201:
-        print(f"New branch created: {branch}")
+        print(f"New branch created: {unique_branch}")
     else:
         print("Failed to create new branch.")
         print(f"Status code: {response.status_code}")
@@ -40,7 +45,7 @@ def create_pull_request(repo_owner, repo_name, branch, title, body, file_path, f
         return
 
     # Get the SHA of the most recent commit for the file
-    file_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{file_path}?ref={branch}"
+    file_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{file_path}?ref={unique_branch}"
     response = requests.get(file_url, headers=headers)
     if response.status_code == 200:
         file_info = response.json()
@@ -56,7 +61,7 @@ def create_pull_request(repo_owner, repo_name, branch, title, body, file_path, f
     commit_payload = {
         "message": commit_message,
         "content": file_content,
-        "branch": branch,
+        "branch": unique_branch,
         "sha": file_sha
     }
 
