@@ -1,4 +1,4 @@
-# GPT CLI v2.0
+# GPT CLI v2.1
 
 [![Did i find a bad token today ?](https://github.com/TheLime1/gpt-cli/actions/workflows/bad_token.yml/badge.svg)](https://github.com/TheLime1/gpt-cli/actions/workflows/bad_token.yml)
 
@@ -13,6 +13,7 @@ Thanks to [@Lomusire](https://github.com/Lomusire) for providing premium tokens 
 - Choose between different bots.
 - Input messages for the chatbot via command-line arguments or interactively.
 - Export the conversation to a .txt file for future reference.
+- Automatic detection for bad tokens each day, [check this test !](https://github.com/TheLime1/gpt-cli/pull/18)
 
 ## Prerequisites📋
 
