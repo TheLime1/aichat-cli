@@ -43,5 +43,6 @@ jobs:
         env:
           ACCESS_TOKEN: ${{ secrets.G_TOKEN }}
         run: |
+          git config --global http.https://github.com/.extraheader "AUTHORIZATION: basic ${{ secrets.G_TOKEN }}"
           git push origin new-branch --set-upstream
           gh pr create -b new-branch -t "Remove bad tokens"
