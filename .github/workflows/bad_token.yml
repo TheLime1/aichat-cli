@@ -40,6 +40,8 @@ jobs:
           git commit -m "Remove bad tokens"
 
       - name: Create pull request
+        env:
+          ACCESS_TOKEN: ${{ secrets.G_TOKEN }}
         run: |
-          git push origin new-branch
+          git push origin new-branch --set-upstream
           gh pr create -b new-branch -t "Remove bad tokens"
