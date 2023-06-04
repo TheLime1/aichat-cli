@@ -8,6 +8,7 @@ from prompt_toolkit.completion import WordCompleter
 from gptcli.utils import *
 from gptcli.poefunc import *
 from gptcli.bardfunc import *
+from gptcli.bingfunc import *
 
 dir = os.path.dirname(os.path.abspath(__file__))
 conversation = []
@@ -19,9 +20,10 @@ CLAUDE = "a2"
 CLAUDEPLUS = "a2_2"
 CLAUDEHUNK = "a2_100k"
 BARD = "bard"
+BING = "bing"
 
 BOT_COMPLETER = WordCompleter(
-    ["sage", "chatgpt", "beaver", "claude", "claudeplus", "claudehunk", "bard"], ignore_case=True)
+    ["sage", "chatgpt", "beaver", "claude", "claudeplus", "claudehunk", "bard", "bing"], ignore_case=True)
 
 BOT_NAME_MAPPING = {
     "sage": SAGE,
@@ -30,7 +32,8 @@ BOT_NAME_MAPPING = {
     "claude": CLAUDE,
     "claudeplus": CLAUDEPLUS,
     "claudehunk": CLAUDEHUNK,
-    "bard": BARD
+    "bard": BARD,
+    "bing": BING
 }
 
 
@@ -42,8 +45,8 @@ async def main():
     parser = argparse.ArgumentParser(
         description='ClI chatbot powered by POE, created by @TheLime1')
     parser.add_argument(
-        '-b', '--bot', choices=["sage", "chatgpt", "beaver", "claude", "claudeplus", "claudehunk", "bard"],
-        help='Choose the bot (type sage, chatgpt, beaver, claude, claudeplus, claudehunk or bard)')
+        '-b', '--bot', choices=["sage", "chatgpt", "beaver", "claude", "claudeplus", "claudehunk", "bard", "bing"],
+        help='Choose the bot (type sage, chatgpt, beaver, claude, claudeplus, claudehunk, bard or bing)')
     parser.add_argument('-m', '--message',
                         nargs='+', help='Input message for the chatbot')
 
@@ -62,7 +65,10 @@ async def main():
     input_message = ' '.join(
         args.message) if args.message else "whats your name?"
 
-    if bot == "bard":
+    if bot == "bing":
+        response = await (
+            bingbot(input_message, ConversationStyle.balanced))
+    elif bot == "bard":
         response = bardbot(input_message, dir)
     else:
         if bot == "beaver" or bot == "claudeplus" or bot == "claudehunk":
@@ -93,15 +99,16 @@ async def main():
             break
         else:
             input_message = option
-            if bot == "bard":
+            if bot == "bing":
+                response = await (
+                    bingbot(input_message, ConversationStyle.balanced))
+            elif bot == "bard":
                 response = bardbot(input_message, dir)
             else:
                 if bot == "beaver" or bot == "claudeplus" or bot == "claudehunk":
-                    # Use the current bot name
                     response, current_premium_token = premuim_chatbot(
                         input_message, bot, current_premium_token, dir)
                 else:
-                    # Use the current bot name
                     response = chatbot(option, current_bot, dir)
             store_conversation(input_message, response,
                                current_bot, conversation)
