@@ -52,32 +52,35 @@ async def main():
 
     args = parser.parse_args()
 
-    bot = args.bot
-    print(ascii_art)
-    if bot is None:
-        while bot not in BOT_NAME_MAPPING:
-            bot = change_bot()
-            if bot is None:
-                print("Invalid input, please try again.")
-    bot = BOT_NAME_MAPPING[bot]
-    current_bot = bot
-
-    input_message = ' '.join(
-        args.message) if args.message else "whats your name?"
-
-    if bot == "bing":
-        response = await (
-            bingbot(input_message, ConversationStyle.balanced))
-    elif bot == "bard":
-        response = bardbot(input_message, dir)
+    if not args.message or not args.bot:
+        print(ascii_art)
+        bot = change_bot()
+        current_bot = BOT_NAME_MAPPING[bot]
     else:
-        if bot == "beaver" or bot == "claudeplus" or bot == "claudehunk":
-            response, current_premium_token = premuim_chatbot(
-                input_message, bot, current_premium_token, dir)
-        else:
-            response = chatbot(input_message, bot, dir)
+        bot = args.bot
+        if bot is None:
+            while bot not in BOT_NAME_MAPPING:
+                bot = change_bot()
+                if bot is None:
+                    print("Invalid input, please try again.")
+        bot = BOT_NAME_MAPPING[bot]
+        current_bot = bot
 
-    store_conversation(input_message, response, current_bot, conversation)
+        input_message = ' '.join(
+            args.message) if args.message else "whats your name?"
+
+        if bot == "bing":
+            response = await (
+                bingbot(input_message, ConversationStyle.balanced))
+        elif bot == "bard":
+            response = bardbot(input_message, dir)
+        else:
+            if bot == "beaver" or bot == "claudeplus" or bot == "claudehunk":
+                response, current_premium_token = premuim_chatbot(
+                    input_message, bot, current_premium_token, dir)
+            else:
+                response = chatbot(input_message, bot, dir)
+        return
 
     while True:
         print("\n")
