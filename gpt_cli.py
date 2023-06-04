@@ -8,6 +8,7 @@ from prompt_toolkit.completion import WordCompleter
 from gptcli.utils import *
 from gptcli.poefunc import *
 from gptcli.bardfunc import *
+from gptcli.bingfunc import *
 
 dir = os.path.dirname(os.path.abspath(__file__))
 conversation = []
@@ -64,7 +65,10 @@ async def main():
     input_message = ' '.join(
         args.message) if args.message else "whats your name?"
 
-    if bot == "bard":
+    if bot == "bing":
+        response = asyncio.run(
+            bingbot(input_message, ConversationStyle.balanced))
+    elif bot == "bard":
         response = bardbot(input_message, dir)
     else:
         if bot == "beaver" or bot == "claudeplus" or bot == "claudehunk":
@@ -95,7 +99,10 @@ async def main():
             break
         else:
             input_message = option
-            if bot == "bard":
+            if bot == "bing":
+                response = asyncio.run(
+                    bingbot(input_message, ConversationStyle.balanced))
+            elif bot == "bard":
                 response = bardbot(input_message, dir)
             else:
                 if bot == "beaver" or bot == "claudeplus" or bot == "claudehunk":
