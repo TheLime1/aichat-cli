@@ -16,15 +16,13 @@ def store_conversation(user_input, bot_response, bot_name, conversation):
     conversation.append((user_input, bot_response, bot_name))
 
 
-def insert_clipboard_message(conversation, chatbot, current_bot, dir):
+def insert_clipboard_message():
     clipboard_text = pyperclip.paste()
     if clipboard_text:
         print("\nClipboard contents:\n")
         print(clipboard_text)
         print("\n")
-        option = clipboard_text.strip()
-        response = chatbot(option.replace('\n', ' '), current_bot, dir)
-        store_conversation(option, response, current_bot, conversation)
+        return clipboard_text
 
 
 def export_conversation(conversation, ascii_art):

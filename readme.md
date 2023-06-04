@@ -4,7 +4,7 @@
 
 A command-line interface chatbot. It allows you to have interactive conversations with different bots, including GPT4 FOR FREE
 
-Check the web version [here](https://github.com/TheLime1/gptCensorFree).
+Check the web version [here](https://github.com/TheLime1/gptCensorFree) (WIP).
 
 Thanks to [@Lomusire](https://github.com/Lomusire) for providing premium tokens ❤️.
 
@@ -13,6 +13,8 @@ Thanks to [@Lomusire](https://github.com/Lomusire) for providing premium tokens 
 - Choose between different bots.
 - Input messages for the chatbot via command-line arguments or interactively.
 - Export the conversation to a .txt file for future reference.
+- Insert your clipboard for multiple-line messages.
+- Delete your messages to respect your privacy.
 - Automatic detection for bad tokens each day, [check this test !](https://github.com/TheLime1/gpt-cli/pull/18)
 
 ## Prerequisites📋
@@ -103,5 +105,5 @@ Once the conversation starts, you can continue the interaction by typing your me
 
 Feel free to customize and enhance the GPT CLI app according to your needs. Happy **chatting**!
 
-![WindowsTerminal_ayTEloGZs7](https://github.com/TheLime1/gpt-cli/assets/47940043/e695eebc-84fb-46d1-bb05-281511994799)
 
+![image](https://github.com/TheLime1/gpt-cli/assets/47940043/e5ee768c-097c-4e10-8299-238df348b882)
