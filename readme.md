@@ -1,4 +1,4 @@
-# GPT CLI v2.1
+# GPT CLI v2.2
 
 [![Did i find a bad token today ?](https://github.com/TheLime1/gpt-cli/actions/workflows/bad_token.yml/badge.svg)](https://github.com/TheLime1/gpt-cli/actions/workflows/bad_token.yml)
 
@@ -70,7 +70,7 @@ then save the token by creating `bard_token.txt` in `/tokens`
 
 ### Bing token
 
-Soon
+Not required.
 
 ---
 

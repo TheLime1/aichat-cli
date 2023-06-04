@@ -66,7 +66,7 @@ async def main():
         args.message) if args.message else "whats your name?"
 
     if bot == "bing":
-        response = asyncio.run(
+        response = await (
             bingbot(input_message, ConversationStyle.balanced))
     elif bot == "bard":
         response = bardbot(input_message, dir)
@@ -100,7 +100,7 @@ async def main():
         else:
             input_message = option
             if bot == "bing":
-                response = asyncio.run(
+                response = await (
                     bingbot(input_message, ConversationStyle.balanced))
             elif bot == "bard":
                 response = bardbot(input_message, dir)
