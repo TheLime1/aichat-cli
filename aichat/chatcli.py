@@ -4,10 +4,10 @@ import os
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
 
-from gptcli.utils import *
-from gptcli.poefunc import *
-from gptcli.bardfunc import *
-from gptcli.bingfunc import *
+from utils import *
+from poefunc import *
+from bardfunc import *
+from bingfunc import *
 
 dir = os.path.dirname(os.path.abspath(__file__))
 conversation = []
