@@ -80,5 +80,6 @@ try:
     print("Login successful. Bots available:", client.get_bot_names())
 except RuntimeError as e:
     print(e)
+    print("try generating manually.")
 
 driver.close()
