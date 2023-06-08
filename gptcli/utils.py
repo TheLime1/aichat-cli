@@ -60,7 +60,7 @@ def change_bot():
     elif bot_input == "2":
         bot = "chatgpt"
     elif bot_input == "3":
-        bot = "beaver"
+        bot = "gpt4"
     elif bot_input == "4":
         bot = "claude"
     elif bot_input == "5":
