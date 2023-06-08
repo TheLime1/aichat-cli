@@ -32,7 +32,7 @@ def export_conversation(conversation, ascii_art):
     if not os.path.exists(directory):
         os.makedirs(directory)
     filepath = os.path.join(directory, filename)
-    with open(filepath, "w") as file:
+    with open(filepath, "w", encoding='utf-8') as file:
         file.write(ascii_art)
         for user_input, bot_response, bot_name in conversation:
             file.write("#######################\n")
