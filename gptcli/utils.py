@@ -32,7 +32,7 @@ def export_conversation(conversation, ascii_art):
     if not os.path.exists(directory):
         os.makedirs(directory)
     filepath = os.path.join(directory, filename)
-    with open(filepath, "w") as file:
+    with open(filepath, "w", encoding='utf-8') as file:
         file.write(ascii_art)
         for user_input, bot_response, bot_name in conversation:
             file.write("#######################\n")
@@ -60,7 +60,7 @@ def change_bot():
     elif bot_input == "2":
         bot = "chatgpt"
     elif bot_input == "3":
-        bot = "beaver"
+        bot = "gpt4"
     elif bot_input == "4":
         bot = "claude"
     elif bot_input == "5":
