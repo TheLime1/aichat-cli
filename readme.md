@@ -39,6 +39,12 @@ pip install -r requirements.txt
 python gpt_cli.py
 ```
 
+## OR download it using pip
+
+```
+pip install aichat-cli --upgrade
+```
+
 <details>
 <summary>🔐#####How To generate tokens manually#####🔐</summary>
 
