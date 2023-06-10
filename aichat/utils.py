@@ -1,6 +1,6 @@
 import os
 import pyperclip
-from gptcli.poefunc import delete_chat
+from poefunc import delete_chat
 
 ascii_art = '''
     __     _                        ______ __            __ 

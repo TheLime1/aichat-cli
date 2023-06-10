@@ -8,7 +8,7 @@ def remove_bad_tokens():
     repo_root = os.getcwd()
 
     premium_tokens_file = os.path.join(
-        repo_root, "tokens", "premium_tokens.txt")
+        repo_root, "aichat", "tokens", "premium_tokens.txt")
     valid_tokens = []
     unchecked_tokens = []
     bad_tokens = []

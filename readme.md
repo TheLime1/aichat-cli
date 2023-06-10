@@ -1,4 +1,4 @@
-# GPT CLI v2.2
+# Ai Chat CLI
 
 [![Did i find a bad token today ?](https://github.com/TheLime1/gpt-cli/actions/workflows/bad_token.yml/badge.svg)](https://github.com/TheLime1/gpt-cli/actions/workflows/bad_token.yml)
 
@@ -23,7 +23,7 @@ Thanks to [@Lomusire](https://github.com/Lomusire) for providing premium tokens 
 
 ## Getting Started🚀
 
-1. Clone or download the GPT CLI repository to your local machine.
+1. Clone or download the CLI app repository to your local machine.
 
 2. Open a command-line interface (e.g., Command Prompt, Terminal) and navigate to the directory where you have saved the GPT CLI files.
 
@@ -32,7 +32,8 @@ Thanks to [@Lomusire](https://github.com/Lomusire) for providing premium tokens 
 pip install -r requirements.txt
 ```
 
-4. Run the GPT CLI app:
+4. Run the CLI app:
+
 ```
 python gpt_cli.py
 ```
@@ -42,6 +43,7 @@ python gpt_cli.py
 
 ---
 ### poe token
+
 Log into [Poe](https://poe.com/) on any web browser, then open your browser's developer tools (also known as "inspect") and look for the value of the `p-b` cookie in the following menus:
 
 Chromium: Devtools > Application > Cookies > poe.com
@@ -50,7 +52,7 @@ Firefox: Devtools > Storage > Cookies
 
 Safari: Devtools > Storage > Cookies
 
-then save the token by creating `poe_token.txt` in `/tokens`
+then save the token by creating `poe_token.txt` in `/aichat/tokens`
 
 ---
 
@@ -65,7 +67,7 @@ Firefox: Devtools > Storage > Cookies
 
 Safari: Devtools > Storage > Cookies
 
-then save the token by creating `bard_token.txt` in `/tokens`
+then save the token by creating `bard_token.txt` in `/aichat/tokens`
 > :warning: **Warning:** Be careful using Bard tokens; they are Google account tokens.
 
 ---
@@ -76,18 +78,17 @@ Not required.
 
 ---
 
-
 </details>
 
 ## Usage📝
 
-The GPT CLI supports the following command-line arguments:
+This CLI app supports the following command-line arguments:
 
 - `-b` or `--bot`: Choose the bot for the conversation. Valid options are provided by the application.
-Example: `python gpt_cli.py -b chatgpt`
+Example: `python chatcli.py -b chatgpt`
 
 - `-m` or `--message`: Input a message for the chatbot.
-Example: `python gpt_cli.py -b sage -m "Hello, how are you?"`
+Example: `python chatcli.py -b sage -m "Hello, how are you?"`
 
 - For more info, use `-h` or `--help` to see the help message.
 
@@ -97,13 +98,12 @@ Once the conversation starts, you can continue the interaction by typing your me
 
 ## Notes📌
 
-- If the app cannot find the `token.txt` file or the file is empty, it will automatically generate a new token using the `token_gen.py` script provided.
+- If the app cannot find the `token.txt` file or the file is empty, it will automatically generate a new token using the `token_gen.py` in `/token_gen` script provided.
 
-- The GPT CLI app also supports the use of premium tokens , so you can be able to use GPT4.
+- The CLI app also supports the use of premium tokens , so you can be able to use GPT4.
 
 - The conversation history is stored within the app and is not persistent between sessions.
 
 Feel free to customize and enhance the GPT CLI app according to your needs. Happy **chatting**!
-
 
 ![image](https://github.com/TheLime1/gpt-cli/assets/47940043/e5ee768c-097c-4e10-8299-238df348b882)
