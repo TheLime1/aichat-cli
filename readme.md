@@ -39,11 +39,26 @@ pip install -r requirements.txt
 python gpt_cli.py
 ```
 
-## OR download it using pip
+## OR download it using pip📥📦
 
 ```
 pip install aichat-cli --upgrade
 ```
+
+<details>
+<summary>📦#####How to add pip package to PATH#####📦</summary>
+
+1. Open the command prompt.
+2. Type `pip show aichat-cli` and press Enter. This will show you the location of the package.
+3. Copy the path of the package.
+4. Open the Start menu and search for “Environment Variables”.
+5. Click on “Edit the system environment variables”.
+6. Click on “Environment Variables” button.
+7. Under “System Variables”, scroll down and find “Path” and click on “Edit”.
+8. Click on “New” and paste the path of the package that you copied earlier.
+9.  Click on “OK” to save changes.
+</details>
+
 
 <details>
 <summary>🔐#####How To generate tokens manually#####🔐</summary>
