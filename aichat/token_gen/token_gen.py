@@ -75,7 +75,11 @@ try:
 except Exception as e:
     print("Error occurred while retrieving or saving the token:", str(e))
 
-client = poe.Client(token)
-print("Login successful. Bots available:", client.get_bot_names())
+try:
+    client = poe.Client(token)
+    print("Login successful. Bots available:", client.get_bot_names())
+except RuntimeError as e:
+    print(e)
+    print("try generating manually.")
 
 driver.close()
