@@ -1,15 +1,21 @@
 import setuptools
 from pathlib import Path
 
-# note: build this package with the following command:
-# pip wheel --no-deps -w dist .
-
+# note: build this package with the following commands: #TODO: automate this
+'''
+python setup.py sdist bdist_wheel
+twine check dist/*
+twine upload dist/*
+'''
 base_path = Path(__file__).parent
 long_description = (base_path / "README.md").read_text(encoding="utf-8")
 
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
+
 setuptools.setup(
     name="aichat-cli",
-    version="0.4.4",
+    version="0.4.5",
     author="TheLime1",
     license="GPLv3",
     description="A CLI app that allows you to have interactive conversations with different AI bots",
@@ -22,14 +28,6 @@ setuptools.setup(
     ],
     python_requires=">=3.7",
     packages=setuptools.find_packages(),
-    install_requires=[
-        'argparse',
-        'poe-api==0.4.4',
-        'selenium',
-        'pyperclip==1.8.2',
-        'prompt_toolkit',
-        'bardapi==0.1.11',
-        'EdgeGPT==0.8.0'
-    ],
+    install_requires=requirements,
     url="https://github.com/TheLime1/aichat-cli"
 )

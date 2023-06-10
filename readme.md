@@ -52,7 +52,7 @@ Firefox: Devtools > Storage > Cookies
 
 Safari: Devtools > Storage > Cookies
 
-then save the token by creating `poe_token.txt` in `/tokens`
+then save the token by creating `poe_token.txt` in `/aichat/tokens`
 
 ---
 
@@ -67,7 +67,7 @@ Firefox: Devtools > Storage > Cookies
 
 Safari: Devtools > Storage > Cookies
 
-then save the token by creating `bard_token.txt` in `/tokens`
+then save the token by creating `bard_token.txt` in `/aichat/tokens`
 > :warning: **Warning:** Be careful using Bard tokens; they are Google account tokens.
 
 ---
@@ -98,7 +98,7 @@ Once the conversation starts, you can continue the interaction by typing your me
 
 ## Notes📌
 
-- If the app cannot find the `token.txt` file or the file is empty, it will automatically generate a new token using the `token_gen.py` script provided.
+- If the app cannot find the `token.txt` file or the file is empty, it will automatically generate a new token using the `token_gen.py` in `/token_gen` script provided.
 
 - The CLI app also supports the use of premium tokens , so you can be able to use GPT4.
 
