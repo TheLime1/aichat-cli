@@ -1,5 +1,6 @@
 # Ai Chat CLI
 
+[![PyPI version](https://img.shields.io/pypi/v/aichat-cli.svg)](https://pypi.org/project/aichat-cli/)
 [![Did i find a bad token today ?](https://github.com/TheLime1/gpt-cli/actions/workflows/bad_token.yml/badge.svg)](https://github.com/TheLime1/gpt-cli/actions/workflows/bad_token.yml)
 
 A command-line interface chatbot. It allows you to have interactive conversations with different bots, including GPT4 FOR FREE
@@ -98,7 +99,7 @@ Once the conversation starts, you can continue the interaction by typing your me
 
 ## Notes📌
 
-- If the app cannot find the `token.txt` file or the file is empty, it will automatically generate a new token using the `token_gen.py` in `/token_gen` script provided.
+- If the app cannot find the `token.txt` file or the file is empty, it will automatically generate a new token using the `token_gen.py` in `/aichat/token_gen` script provided.
 
 - The CLI app also supports the use of premium tokens , so you can be able to use GPT4.
 
