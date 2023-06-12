@@ -36,7 +36,7 @@ pip install -r requirements.txt
 4. Run the CLI app:
 
 ```
-python gpt_cli.py
+python chatcli.py
 ```
 
 ## OR download it using pip📥📦

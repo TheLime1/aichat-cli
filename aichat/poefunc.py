@@ -6,7 +6,7 @@ import subprocess
 def chatbot(input_message, bot, dir):
     try:
         # initialize POE client with token
-        with open('tokens/poe_token.txt', 'r') as f:  # put your token in token.txt
+        with open('tokens/poe_token.txt', 'r') as f:
             token = f.read().rstrip()
         client = poe.Client(token)
 
@@ -105,6 +105,7 @@ def check_poe_token(dir):
 
 
 def generate_poe_token(dir):
+    # TODO: change to poe_token_gen.py
     gen_file = os.path.join(dir, "token_gen", "token_gen.py")
     print("Token file not found or empty. Generating token...")
     subprocess.run(["python", gen_file], check=True)

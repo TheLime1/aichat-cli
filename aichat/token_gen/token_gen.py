@@ -19,7 +19,6 @@ options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
 driver = webdriver.Chrome(options=options)
 
-# Test name: final
 # Step # | name | target | value
 driver.get("https://poe.com/login?redirect_url=%2F")
 assert "Poe" in driver.title
