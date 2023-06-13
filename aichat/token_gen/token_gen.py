@@ -1,4 +1,5 @@
 import sys
+import os
 import poe
 import time
 
@@ -24,12 +25,7 @@ driver.get("https://poe.com/login?redirect_url=%2F")
 assert "Poe" in driver.title
 print("Page opened successfully.")
 
-driver.set_window_size(839, 816)
-
-driver.find_element(
-    By.CSS_SELECTOR, ".Button_buttonBase__0QP_m:nth-child(5)").click()
-print("Clicked on use email.")
-time.sleep(3)
+driver.set_window_size(802, 816)
 
 driver.find_element(By.CSS_SELECTOR, ".EmailInput_emailInput__4v_bn").click()
 print("Clicked on email box.")
@@ -66,9 +62,12 @@ time.sleep(1)
 
 # Get token and save to a file
 token = None
+script_dir = os.path.dirname(os.path.abspath(__file__))
+token_path = os.path.join(script_dir, "..", "tokens", "poe_token.txt")
+
 try:
     token = driver.get_cookie("p-b")["value"]
-    with open("tokens/poe_token.txt", "w") as f:
+    with open(token_path, "w") as f:
         f.write(token)
     print("Token saved successfully in poe_token.txt.")
 except Exception as e:
@@ -76,6 +75,7 @@ except Exception as e:
 
 try:
     client = poe.Client(token)
+    print("token:", token)
     print("Login successful. Bots available:", client.get_bot_names())
 except RuntimeError as e:
     print(e)
