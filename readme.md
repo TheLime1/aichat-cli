@@ -36,6 +36,7 @@ pip install -r requirements.txt
 4. Run the CLI app:
 
 ```
+cd aichat
 python chatcli.py
 ```
 
