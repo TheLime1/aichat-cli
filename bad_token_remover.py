@@ -28,7 +28,7 @@ def remove_bad_tokens():
                 consecutive_valid_tokens += 1
                 print(f"Valid token: {token}")
 
-                if consecutive_valid_tokens == 3:
+                if consecutive_valid_tokens == 1000:
                     break  # Stop the program when there are three consecutive valid tokens
 
             except RuntimeError:
