@@ -2,7 +2,7 @@ name: Did i find a bad token today ?
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 */4 * *" # every 4 days
   workflow_dispatch: # Add manual run event
 
 jobs:
