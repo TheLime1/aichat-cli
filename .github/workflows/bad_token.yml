@@ -37,6 +37,11 @@ jobs:
           git add .
           git commit -m "Remove bad tokens"
 
+      - name: Fetch and merge remote changes
+        run: |
+          git fetch origin main
+          git merge origin/main
+
       - name: Create pull request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
