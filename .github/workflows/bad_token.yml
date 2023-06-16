@@ -31,6 +31,10 @@ jobs:
           git config --global user.email "everpadd4@gmail.com"
           git config --global user.name "thelime1"
 
+      - name: Delete old branch
+        run: |
+          git push origin --delete new-branch
+
       - name: Create new branch
         run: |
           git checkout -b new-branch
