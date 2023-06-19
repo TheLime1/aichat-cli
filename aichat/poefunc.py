@@ -1,7 +1,9 @@
 import poe
 import os
 import subprocess
-
+import requests
+import requests
+from io import StringIO
 
 def chatbot(input_message, bot, dir):
     try:
@@ -26,18 +28,27 @@ def chatbot(input_message, bot, dir):
             raise e
 
 
+def get_premium_tokens_from_link(link):
+    response = requests.get(link)
+    if response.status_code == 200:
+        token_data = response.text
+        token_file = StringIO(token_data)
+        premium_tokens = token_file.read().splitlines()
+        return premium_tokens
+    else:
+        raise RuntimeError("Failed to retrieve premium tokens from the link.")
+
 def premuim_chatbot(input_message, bot, current_premium_token, dir):
-    premium_tokens_file = os.path.join(dir, "tokens", "premium_tokens.txt")
+    premium_tokens_link = "https://raw.githubusercontent.com/TheLime1/online-proxy-list/main/poe_token_check/poe_tokens.txt"
     token_checked = False  # Flag to track if a valid token has been found
 
     try:
         if current_premium_token is None:
-            # Read premium tokens from file only when no current token is available
-            with open(premium_tokens_file, 'r') as f:
-                premium_tokens = f.read().splitlines()
-                if len(premium_tokens) > 0:
-                    # Store the first token in the list
-                    current_premium_token = premium_tokens[0]
+            # Retrieve premium tokens from the link only when no current token is available
+            premium_tokens = get_premium_tokens_from_link(premium_tokens_link)
+            if len(premium_tokens) > 0:
+                # Store the first token in the list
+                current_premium_token = premium_tokens[0]
 
         # Try the current premium token or the next available token
         while current_premium_token:
@@ -67,8 +78,7 @@ def premuim_chatbot(input_message, bot, current_premium_token, dir):
                                   "Daily limit reached for a2_100k."]
                 if any(error_message in str(e) for error_message in error_messages):
                     if "Daily limit reached for" in str(e):
-                        print(
-                            "Daily limit reached for the chatbot, trying the next token...")
+                        print("Daily limit reached for the chatbot, trying the next token...")
                     else:
                         print("Invalid token, trying the next one...")
 
