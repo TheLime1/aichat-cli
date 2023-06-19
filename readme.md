@@ -1,7 +1,6 @@
 # Ai Chat CLI
 
 [![PyPI version](https://img.shields.io/pypi/v/aichat-cli.svg)](https://pypi.org/project/aichat-cli/)
-[![Did i find a bad token today ?](https://github.com/TheLime1/gpt-cli/actions/workflows/bad_token.yml/badge.svg)](https://github.com/TheLime1/gpt-cli/actions/workflows/bad_token.yml)
 
 A command-line interface chatbot. It allows you to have interactive conversations with different bots, including GPT4 FOR FREE
 
@@ -20,7 +19,7 @@ Updated poe.com token list [here](https://raw.githubusercontent.com/TheLime1/onl
 - Export the conversation to a .txt file for future reference.
 - Insert your clipboard for multiple-line messages.
 - Delete your messages to respect your privacy.
-- Automatic detection for bad tokens each day, [check this test !](https://github.com/TheLime1/gpt-cli/pull/18)
+- Updated tokens each day
 
 ## Prerequisites📋
 
