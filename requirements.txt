@@ -1,4 +1,4 @@
-poe-api==0.4.6
+poe-api==0.4.7
 selenium
 pyperclip==1.8.2
 prompt_toolkit
