@@ -15,7 +15,7 @@ with open('requirements.txt') as f:
 
 setuptools.setup(
     name="aichat-cli",
-    version="0.4.9",
+    version="0.5.0",
     author="TheLime1",
     license="GPLv3",
     description="A CLI app that allows you to have interactive conversations with different AI bots",
