@@ -8,7 +8,7 @@ Check the web version [here](https://github.com/TheLime1/gptCensorFree) (WIP).
 
 Thanks to [@Lomusire](https://github.com/Lomusire) for providing premium tokens ❤️.
 
-We are in a race with poe.com devs baning our tokens, you can help by [generating tokens](https://krakenfiles.com/view/kUx2jPXcZ0/file.html). 
+We are in a race with poe.com devs baning our tokens, you can help by [generating tokens](https://drive.google.com/file/d/1D9oHx_com_cn_XzZfcQ7XLGyQ9xUtSAG/view?usp=sharing). 
 
 Updated poe.com token list [here](https://raw.githubusercontent.com/TheLime1/online-proxy-list/main/poe_token_check/poe_tokens.txt).
 
