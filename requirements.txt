@@ -2,5 +2,5 @@ poe-api==0.4.17
 selenium
 pyperclip==1.8.2
 prompt_toolkit
-bardapi==0.1.11
+bardapi==0.1.32
 EdgeGPT==0.10.11
