@@ -4,7 +4,7 @@
 
 > [!WARNING]
 > This project is no longer maintained.
-> if you want to continue chatting with GPT4 in the Terminal ,  [this you can use](https://github.com/TheLime1/CheatoMate)
+> if you want to continue chatting with GPT4 in the Terminal ,  [you can use this](https://github.com/TheLime1/CheatoMate)
 
 A command-line interface chatbot. It allows you to have interactive conversations with different bots, including GPT4 FOR FREE
 
